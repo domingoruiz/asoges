@@ -1,10 +1,17 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "domingoruiz/asoges",
+    "version": "1.0",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "Sistema integral para la gestión de asociaciones",
+    "keywords": ["PHP", "Laravel", "MYSQL"],
+    "authors": [{
+        "name": "Domingo Ruiz Arroyo",
+        "email": "ordenadordomi@gmail.com"
+    }],
+    "support": {
+        "source": "https://github.com/domingoruiz/asoges"
+    },
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
