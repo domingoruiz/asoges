@@ -1,0 +1,33 @@
+# Laravel
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+.env
+Homestead.yaml
+Homestead.json
+
+# Laravel Mix / npm
+npm-debug.log
+yarn-error.log
+
+# IDE / OS files
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Logs and caches
+/storage/logs/*
+!/storage/logs/.gitignore
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+
+#Others
+composer.phar
+/public/hot
+stubs/%
