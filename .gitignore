@@ -26,6 +26,8 @@ Thumbs.db
 !/storage/framework/sessions/.gitignore
 /storage/framework/views/*
 !/storage/framework/views/.gitignore
+/public/filament-tmp
+/storage/filament-media
 
 #Others
 composer.phar
