@@ -17,4 +17,14 @@ class Rol extends Model
     {
         return $this->hasMany(AsoUsr::class);
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'alt_usr');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'mod_usr');
+    }
 }

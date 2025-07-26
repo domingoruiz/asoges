@@ -23,4 +23,14 @@ class Aso extends Model
                     ->withPivot('rol_id')
                     ->withTimestamps();
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'alt_usr');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'mod_usr');
+    }
 }
