@@ -16,9 +16,11 @@ Actualizar Composer
 Crear módulo de nwidart/laravel-modules
 - php artisan module:make
 
-Ejecuta todas las migraciones y seeders
-- php artisan migrate
-- php artisan db:seed
+Ejecuta todas las migraciones y seeders pendientes
+- php artisan migrate; php artisan db:seed
+
+Ejecuta todas las migraciones y seeders desde cero
+- php artisan migrate:fresh --seed 
 
 Limpiar cache Laravel
 - php artisan optimize:clear

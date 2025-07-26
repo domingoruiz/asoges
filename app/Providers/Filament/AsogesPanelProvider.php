@@ -17,6 +17,10 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Http\Middleware\SelectAsoMiddleware;
+use App\Filament\Pages\SelectAso;
+use Filament\Navigation\UserMenuItem;
+
 
 class AsogesPanelProvider extends PanelProvider
 {
@@ -33,6 +37,7 @@ class AsogesPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
+                SelectAso::class, 
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
@@ -40,6 +45,7 @@ class AsogesPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->authGuard('web')
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -50,6 +56,7 @@ class AsogesPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                SelectAsoMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
