@@ -11,6 +11,7 @@ trait UserStamps
         static::creating(function ($model) {
             if (Auth::check()) {
                 $model->alt_usr = Auth::id();
+                $model->mod_usr = Auth::id();
             }
         });
 
