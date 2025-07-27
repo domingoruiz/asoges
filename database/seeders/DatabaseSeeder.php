@@ -13,5 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
         $this->call(RolSeeder::class);
+        $this->call(ContinentsSeeder::class);
+        $this->call(CurrenciesSeeder::class);
+        $this->call(PaiSeeder::class);
     }
 }
