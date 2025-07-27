@@ -18,7 +18,6 @@ class CreateRolesTable extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-
             $table->foreignId('mod_usr')
                 ->nullable()
                 ->constrained('users')

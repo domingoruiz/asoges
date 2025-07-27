@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Rol;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class RolSeeder extends Seeder
 {
@@ -12,11 +14,38 @@ class RolSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('rol')->insert([
-            ['nombre' => 'Presidente'],
-            ['nombre' => 'Secretario'],
-            ['nombre' => 'Tesorero'],
-            ['nombre' => 'Vocal'],
+        $now = Carbon::now();
+        
+        Rol::create([
+                'nombre' => 'Presidente',
+                'alt_usr' => 1,
+                'mod_usr' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+        ]);
+
+        Rol::create([
+                'nombre' => 'Secretario',
+                'alt_usr' => 1,
+                'mod_usr' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+        ]);
+
+        Rol::create([
+                'nombre' => 'Tesorero',
+                'alt_usr' => 1,
+                'mod_usr' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+        ]);
+
+        Rol::create([
+                'nombre' => 'Vocal',
+                'alt_usr' => 1,
+                'mod_usr' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
         ]);
     }
 }
