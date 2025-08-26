@@ -5,15 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CurrencyResource\Pages;
 use App\Filament\Resources\CurrencyResource\RelationManagers;
 use App\Models\Currency;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use App\Exports\CurrenciesExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Filament\Tables\Actions\BulkAction;
 
 class CurrencyResource extends Resource
 {
@@ -62,7 +61,16 @@ class CurrencyResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('nombre'),
-                TextColumn::make('simbolo')
+                TextColumn::make('simbolo'),
+            ])
+            ->bulkActions([
+                BulkAction::make('exportar')
+                    ->label('Exportar seleccionados')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function ($records) {
+                        $ids = $records->pluck('id');
+                        return Excel::download(new CurrenciesExport($ids), 'monedas.xlsx');
+                    }),
             ]);
     }
 
