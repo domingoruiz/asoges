@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\BulkAction;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PaisesExport;
+use Illuminate\Support\Collection;
 
 class PaiResource extends Resource
 {
@@ -46,12 +50,12 @@ class PaiResource extends Resource
                 TextInput::make('prefijo'),
 
                 BelongsToSelect::make('continente')
-                    ->relationship('continente', 'nombre')
+                    ->relationship('continenteRel', 'nombre')
                     ->nullable(),
 
                 BelongsToSelect::make('moneda')
-                    ->relationship('moneda', 'nombre')
-                    ->searchable(),
+                    ->relationship('monedaRel', 'nombre')
+                    ->searchable()
             ]);
     }
 
@@ -61,7 +65,16 @@ class PaiResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('nombre'),
-                TextColumn::make('codigo_iso2')->label('ISO2'),
+                TextColumn::make('codigo_iso2')->label('ISO2')
+            ])
+            ->bulkActions([
+                BulkAction::make('exportar')
+                    ->label('Exportar seleccionados')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function (Collection $records) {
+                        $ids = $records->pluck('id');
+                        return Excel::download(new PaisesExport($ids), 'paises.xlsx');
+                    }),
             ]);
     }
 

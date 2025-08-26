@@ -25,14 +25,14 @@ class Pai extends Model
         'mod_usr',
     ];
 
-    public function continente(): BelongsTo
+    public function continenteRel(): BelongsTo
     {
-        return $this->belongsTo(Continent::class, 'continent');
+        return $this->belongsTo(\App\Models\Continent::class, 'continente');
     }
 
-    public function moneda(): BelongsTo
+    public function monedaRel(): BelongsTo
     {
-        return $this->belongsTo(Currency::class, 'currency');
+        return $this->belongsTo(\App\Models\Currency::class, 'moneda');
     }
 
     public function createdBy()
