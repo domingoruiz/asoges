@@ -14,6 +14,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Maatwebsite\Excel\Facades\Excel;
+use Filament\Tables\Actions\BulkAction;
+use App\Exports\ContinentsExport;
+use Illuminate\Support\Collection;
 
 class ContinentResource extends Resource
 {
@@ -49,11 +53,23 @@ class ContinentResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('id'),
-            TextColumn::make('codigo')->label('Código'),
-            TextColumn::make('nombre')->label('Nombre'),
-        ]);
+        return $table
+            ->columns([
+                TextColumn::make('id'),
+                TextColumn::make('codigo')->label('Código'),
+                TextColumn::make('nombre')->label('Nombre'),
+            ])
+            ->bulkActions([
+                BulkAction::make('exportarAhora')
+                    ->label('Exportar seleccionados')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function (Collection $records) {
+                        return Excel::download(
+                            new ContinentsExport($records->pluck('id')),
+                            'continentes.xlsx'
+                        );
+                    }),
+            ]);
     }
 
     public static function getRelations(): array
