@@ -38,6 +38,11 @@ class PaiResource extends Resource
         return 'Paises';
     }
 
+    public static function canAccess(): bool
+    {
+        return session('rol_activo') === 'superadmin';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

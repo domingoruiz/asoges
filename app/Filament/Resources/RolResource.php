@@ -17,6 +17,8 @@ class RolResource extends Resource
 {
     protected static ?string $model = Rol::class;
 
+    protected static ?string $navigationGroup = 'Maestros';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function canAccess(): bool

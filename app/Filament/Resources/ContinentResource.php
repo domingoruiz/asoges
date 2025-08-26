@@ -37,6 +37,11 @@ class ContinentResource extends Resource
         return 'Continentes';
     }
 
+    public static function canAccess(): bool
+    {
+        return session('rol_activo') === 'superadmin';
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
