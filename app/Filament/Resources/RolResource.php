@@ -10,8 +10,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RolesExport;
 
 class RolResource extends Resource
 {
@@ -54,16 +56,20 @@ class RolResource extends Resource
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable()
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                BulkAction::make('exportar')
+                    ->label('Exportar seleccionados')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function (Collection $records) {
+                        return Excel::download(
+                            new RolesExport($records->pluck('id')),
+                            'roles.xlsx'
+                        );
+                    }),
+                Tables\Actions\DeleteBulkAction::make()
             ]);
     }
 
