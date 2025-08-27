@@ -13,9 +13,6 @@ Sistema integral para la gestión de asociaciones
 Actualizar Composer 
 - composer update
 
-Crear módulo de nwidart/laravel-modules
-- php artisan module:make
-
 Ejecuta todas las migraciones y seeders pendientes
 - php artisan migrate; php artisan db:seed
 
