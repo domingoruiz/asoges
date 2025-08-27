@@ -10,8 +10,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AsosExport;
 
 class AsoResource extends Resource
 {
@@ -81,9 +83,15 @@ class AsoResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                BulkAction::make('exportar')
+                    ->label('Exportar seleccionados')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function (Collection $records) {
+                        return Excel::download(
+                            new AsosExport($records->pluck('id')),
+                            'asociaciones.xlsx'
+                        );
+                    }),
                 Tables\Actions\DeleteBulkAction::make()
             ]);
     }
