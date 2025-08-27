@@ -76,6 +76,7 @@ class CurrencyResource extends Resource
                         $ids = $records->pluck('id');
                         return Excel::download(new CurrenciesExport($ids), 'monedas.xlsx');
                     }),
+                Tables\Actions\DeleteBulkAction::make()
             ]);
     }
 

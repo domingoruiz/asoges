@@ -80,6 +80,7 @@ class PaiResource extends Resource
                         $ids = $records->pluck('id');
                         return Excel::download(new PaisesExport($ids), 'paises.xlsx');
                     }),
+                Tables\Actions\DeleteBulkAction::make()
             ]);
     }
 

@@ -20,7 +20,7 @@ class CreateAsosTable extends Migration
                 ->nullable()
                 ->constrained('users')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->restrictOnDelete();
 
             $table->date('fch_constitucion');
             $table->string('nombre');

@@ -21,7 +21,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('users')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->restrictOnDelete();
 
             $table->string('nombre');
             $table->string('nombre_en')->nullable();
@@ -34,7 +34,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('continents')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->restrictOnDelete();
 
             $table->foreignId('moneda')
                 ->constrained('currencies')

@@ -22,7 +22,7 @@ class CreateRolesTable extends Migration
                 ->nullable()
                 ->constrained('users')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->restrictOnDelete();
 
             $table->string('nombre')->unique();
         });

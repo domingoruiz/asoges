@@ -20,11 +20,11 @@ class CreateAsoUsrTable extends Migration
                 ->nullable()
                 ->constrained('users')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->restrictOnDelete();
 
-            $table->foreignId('aso_id')->constrained('aso')->cascadeOnDelete();
-            $table->foreignId('usr_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('rol_id')->constrained('rol')->cascadeOnDelete();
+            $table->foreignId('aso_id')->constrained('aso')->restrictOnDelete();
+            $table->foreignId('usr_id')->constrained('users')->restrictOnDelete();
+            $table->foreignId('rol_id')->constrained('rol')->restrictOnDelete();
         });
     }
 

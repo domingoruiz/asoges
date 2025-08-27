@@ -74,6 +74,7 @@ class ContinentResource extends Resource
                             'continentes.xlsx'
                         );
                     }),
+                Tables\Actions\DeleteBulkAction::make()
             ]);
     }
 

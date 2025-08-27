@@ -19,7 +19,7 @@ return new class extends Migration {
                 ->nullable()
                 ->constrained('users')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->restrictOnDelete();
 
             $table->string('codigo', 2);
             $table->string('nombre');
