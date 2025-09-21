@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Providers\Filament;
+namespace App\Providers;
 
+use App\Filament\Pages\SelectAso;
+use App\Http\Middleware\SelectAsoMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -17,9 +19,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Http\Middleware\SelectAsoMiddleware;
-use App\Filament\Pages\SelectAso;
-use Filament\Navigation\UserMenuItem;
 
 
 class AsogesPanelProvider extends PanelProvider

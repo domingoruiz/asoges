@@ -1,6 +1,5 @@
 <?php
 
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\Filament\AsogesPanelProvider::class,
+    \App\Providers\AsogesPanelProvider::class
 ];

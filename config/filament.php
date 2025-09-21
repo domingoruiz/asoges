@@ -4,6 +4,6 @@
 
 return [
     'panels' => [
-        App\Providers\Filament\AsogesPanelProvider::class,
+        \App\Providers\AsogesPanelProvider::class,
     ],
 ];
