@@ -9,9 +9,7 @@ use Illuminate\Support\Carbon;
 
 class RolSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
         $now = Carbon::now();

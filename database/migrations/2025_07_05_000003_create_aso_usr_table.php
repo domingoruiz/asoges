@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAsoUsrTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -32,4 +32,4 @@ class CreateAsoUsrTable extends Migration
     {
         Schema::dropIfExists('aso_usr');
     }
-}
+};

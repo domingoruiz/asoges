@@ -6,9 +6,6 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $this->call(UserSeeder::class);
@@ -16,5 +13,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ContinentsSeeder::class);
         $this->call(CurrenciesSeeder::class);
         $this->call(PaiSeeder::class);
+        $this->call(SocioTipoSeeder::class);
     }
 }
