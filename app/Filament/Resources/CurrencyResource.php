@@ -16,6 +16,7 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
+use Filament\Tables\Filters\Filter;
 
 class CurrencyResource extends Resource
 {
@@ -54,24 +55,20 @@ class CurrencyResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id'),
-                TextColumn::make('nombre'),
+                TextColumn::make('nombre')->searchable(),
                 TextColumn::make('simbolo'),
             ])
             ->bulkActions([
-                BulkActionGroup::make([
-                    BulkAction::make('exportar')
-                        ->label('Exportar seleccionados')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->action(function (Collection $records) {
-                            return Excel::download(
-                                new CurrenciesExport($records->pluck('id')),
-                                'monedas.xlsx'
-                            );
-                        }),
-
-                    DeleteBulkAction::make(),
-                ]),
+                BulkAction::make('exportar')
+                    ->label('Exportar seleccionados')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function (Collection $records) {
+                        return Excel::download(
+                            new CurrenciesExport($records->pluck('id')),
+                            'monedas.xlsx'
+                        );
+                    }),
+                DeleteBulkAction::make(),
             ]);
     }
 

@@ -76,12 +76,6 @@ class AsoResource extends Resource
                 Tables\Columns\TextColumn::make('cif')
                     ->searchable()
             ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
             ->bulkActions([
                 BulkAction::make('exportar')
                     ->label('Exportar seleccionados')

@@ -57,8 +57,9 @@ class SocioTipoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated(false)
             ->columns([
-                TextColumn::make('id')->label('ID')->sortable(),
+                TextColumn::make('id')->label('ID')->sortable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
                 TextColumn::make('created_at')->label('Creado')->dateTime()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')->label('Modificado')->dateTime()->toggleable(isToggledHiddenByDefault: true),
@@ -67,23 +68,18 @@ class SocioTipoResource extends Resource
             ->filters([
                 TrashedFilter::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-            ])
             ->bulkActions([
-                BulkActionGroup::make([
-                    BulkAction::make('exportar')
-                        ->label('Exportar seleccionados (XLSX)')
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->action(function (Collection $records) {
-                            return Excel::download(
-                                new SocioTiposExport($records->pluck('id')),
-                                'tipos_socio.xlsx'
-                            );
-                        }),
-                    DeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
+                BulkAction::make('exportar')
+                    ->label('Exportar seleccionados')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(function (Collection $records) {
+                        return Excel::download(
+                            new SocioTiposExport($records->pluck('id')),
+                            'tipos_socio.xlsx'
+                        );
+                    }),
+                DeleteBulkAction::make(),
+                RestoreBulkAction::make(),
             ]);
     }
 
@@ -96,4 +92,3 @@ class SocioTipoResource extends Resource
         ];
     }
 }
-

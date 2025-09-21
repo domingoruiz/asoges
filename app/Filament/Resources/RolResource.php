@@ -56,9 +56,6 @@ class RolResource extends Resource
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable()
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
             ->bulkActions([
                 BulkAction::make('exportar')
                     ->label('Exportar seleccionados')

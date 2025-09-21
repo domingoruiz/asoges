@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,6 +20,7 @@ use Filament\Tables\Actions\BulkAction;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PaisesExport;
 use Illuminate\Support\Collection;
+use Filament\Tables\Filters\Filter;
 
 class PaiResource extends Resource
 {
@@ -68,8 +70,7 @@ class PaiResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id'),
-                TextColumn::make('nombre'),
+                TextColumn::make('nombre')->searchable(),
                 TextColumn::make('codigo_iso2')->label('ISO2')
             ])
             ->bulkActions([

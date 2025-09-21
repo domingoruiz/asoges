@@ -60,9 +60,8 @@ class ContinentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id'),
                 TextColumn::make('codigo')->label('Código'),
-                TextColumn::make('nombre')->label('Nombre'),
+                TextColumn::make('nombre')->label('Nombre')->searchable(),
             ])
             ->bulkActions([
                 BulkAction::make('exportarAhora')
