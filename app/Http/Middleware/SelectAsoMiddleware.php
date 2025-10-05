@@ -9,8 +9,6 @@ class SelectAsoMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        // Si no está autenticado, o ya estamos en la página de selección,
-        // o ya existe rol_activo en sesión, dejamos pasar.
         if (
             ! auth()->check()
             || $request->is('select-aso')
@@ -19,7 +17,6 @@ class SelectAsoMiddleware
             return $next($request);
         }
 
-        // Redirigimos por URL en lugar de por nombre de ruta.
-        return redirect('/select-aso');
+        return redirect()->route('filament.asoges.pages.select-aso');
     }
 }
