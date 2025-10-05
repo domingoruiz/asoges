@@ -3,7 +3,7 @@
     "name": "domingoruiz/asoges",
     "version": "1.0",
     "type": "project",
-    "description": "Sistema integral para la gestión de asociaciones",
+    "description": "Aplicación web para la gestión integral y documental de asociaciones",
     "keywords": [
         "PHP",
         "Laravel",

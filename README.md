@@ -1,6 +1,6 @@
 # Asoges
 
-Sistema integral para la gestión de asociaciones
+Aplicación web para la gestión integral y documental de asociaciones
 
 ## Entorno de desarrollo
 - Apple OS X 26.0 (Apple Silicon)
@@ -20,7 +20,7 @@ Ejecuta todas las migraciones y seeders desde cero
 - php artisan migrate:fresh --seed 
 
 Limpiar cache Laravel
-- php artisan optimize:clear
+- php artisan cache:clear && php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan event:clear && php artisan clear-compiled && php artisan optimize
 
 ## Desarrollo
 Aplicación desarrollada por Domingo Ruiz Arroyo <ordenadordomi@gmail.com>
