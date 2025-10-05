@@ -17,7 +17,7 @@ class AuditAction
             ->modalSubmitAction(false)
             ->modalCancelActionLabel('Cerrar')
             ->modalContent(fn ($livewire): View => view(
-                'components.forms.audit-action',
+                'forms.audit-action',
                 ['record' => $livewire->record],
             ));
     }
