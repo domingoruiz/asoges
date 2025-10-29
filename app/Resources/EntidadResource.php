@@ -51,12 +51,14 @@ class EntidadResource extends Resource
                             ignoreRecord: true,
                             modifyRuleUsing: fn (Unique $rule) =>
                             $rule->where('aso_id', session('aso_actual'))
-                        ),
+                        )
+                        ->rule('regex:/^[\p{L}\p{N}\s-]+$/u'),
 
                     Forms\Components\TextInput::make('cif')
                         ->label('CIF')
                         ->required()
-                        ->maxLength(20),
+                        ->maxLength(20)
+                        ->rule('regex:/^[A-Z0-9]+$/'),
                 ])
                 ->columns(2),
 
@@ -64,19 +66,24 @@ class EntidadResource extends Resource
                 ->schema([
                     Forms\Components\TextInput::make('direccion')
                         ->label('Dirección')
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->required(),
 
                     Forms\Components\TextInput::make('cp')
                         ->label('CP')
-                        ->maxLength(10),
+                        ->maxLength(10)
+                        ->required()
+                        ->rule('regex:/^\d{5}$/'),
 
                     Forms\Components\TextInput::make('localidad')
                         ->label('Localidad')
-                        ->maxLength(100),
+                        ->maxLength(100)
+                        ->required(),
 
                     Forms\Components\TextInput::make('provincia')
                         ->label('Provincia')
-                        ->maxLength(100),
+                        ->maxLength(100)
+                        ->required(),
 
                     Forms\Components\Select::make('pais')
                         ->label('País')
@@ -84,6 +91,7 @@ class EntidadResource extends Resource
                         ->preload()
                         ->searchable()
                         ->reactive()
+                        ->required()
                         ->afterStateUpdated(function ($state, $set) {
                             $pais = Pai::find($state);
                             if ($pais) {
@@ -114,11 +122,13 @@ class EntidadResource extends Resource
                 ->schema([
                     Forms\Components\TextInput::make('swift_bic')
                         ->label('SWIFT/BIC')
-                        ->maxLength(50),
+                        ->maxLength(50)
+                        ->rule('regex:/^[A-Za-z0-9]+$/'),
 
                     Forms\Components\TextInput::make('iban')
                         ->label('IBAN')
-                        ->maxLength(50),
+                        ->maxLength(50)
+                        ->rule('regex:/^[A-Za-z0-9]+$/'),
 
                     Forms\Components\Select::make('moneda')
                         ->label('Moneda')
@@ -133,12 +143,14 @@ class EntidadResource extends Resource
                 ->schema([
                     Forms\Components\TextInput::make('telefono')
                         ->label('Teléfono')
-                        ->maxLength(20),
+                        ->maxLength(20)
+                        ->rule('regex:/^\+?[1-9]\d{1,14}$/'),
 
                     Forms\Components\TextInput::make('email')
                         ->label('Email')
                         ->email()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->required(),
 
                     Forms\Components\TextInput::make('web')
                         ->label('Web')
@@ -164,14 +176,12 @@ class EntidadResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
-                Tables\Columns\TextColumn::make('nombre_fiscal')->label('Nombre fiscal')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('cif')->label('CIF')->sortable(),
-                Tables\Columns\TextColumn::make('paisRel.nombre')->label('País')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('continenteRel.nombre')->label('Continente')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('monedaRel.codigo_iso')->label('Moneda')->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('nombre_fiscal')->label('Nombre fiscal')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('localidad')->label('Localidad')->toggleable(),
+                Tables\Columns\TextColumn::make('paisRel.nombre')->label('País')->sortable()->toggleable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

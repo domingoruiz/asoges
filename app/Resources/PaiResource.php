@@ -44,12 +44,38 @@ class PaiResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nombre')->required(),
-                TextInput::make('nombre_en'),
-                TextInput::make('codigo_iso2')->maxLength(2)->label('ISO2'),
-                TextInput::make('codigo_iso3')->maxLength(3)->label('ISO3'),
-                TextInput::make('codigo_num')->numeric()->label('Código de país'),
-                TextInput::make('prefijo'),
+                TextInput::make('nombre')
+                    ->required()
+                    ->maxLength(255)
+                    ->rule('regex:/^[\p{L}\s]+$/u'),
+
+                TextInput::make('nombre_en')
+                    ->maxLength(255)
+                    ->rule('regex:/^[\p{L}\s]+$/u'),
+
+                TextInput::make('codigo_iso2')
+                    ->maxLength(2)
+                    ->label('ISO2')
+                    ->required()
+                    ->rule('alpha'),
+
+                TextInput::make('codigo_iso3')
+                    ->maxLength(3)
+                    ->label('ISO3')
+                    ->required()
+                    ->rule('alpha'),
+
+                TextInput::make('codigo_num')
+                    ->label('Código de país')
+                    ->required()
+                    ->rule('numeric')
+                    ->rule('min:1')
+                    ->rule('max:999'),
+
+                TextInput::make('prefijo')
+                    ->maxLength(5)
+                    ->numeric()
+                    ->nullable(),
 
                 BelongsToSelect::make('continente')
                     ->relationship('continenteRel', 'nombre')
@@ -64,6 +90,7 @@ class PaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated(true)
             ->columns([
                 TextColumn::make('nombre')->searchable(),
                 TextColumn::make('codigo_iso2')->label('ISO2')
@@ -78,13 +105,6 @@ class PaiResource extends Resource
                     }),
                 Tables\Actions\DeleteBulkAction::make()
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

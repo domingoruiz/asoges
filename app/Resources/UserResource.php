@@ -48,14 +48,16 @@ class UserResource extends Resource
                 ->label('Nombre')
                 ->required()
                 ->maxLength(255)
-                ->unique(ignoreRecord: true),
+                ->unique(ignoreRecord: true)
+                ->rule('regex:/^[\p{L}\p{N}\s\-_]+$/u'),
 
             TextInput::make('email')
                 ->label('Email')
                 ->email()
                 ->required()
                 ->maxLength(255)
-                ->unique(ignoreRecord: true),
+                ->unique(ignoreRecord: true)
+                ->rule('regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/'),
 
             TextInput::make('password')
                 ->label('Contraseña')
@@ -72,7 +74,15 @@ class UserResource extends Resource
                 )
                 ->dehydrated(fn ($state) => filled($state))
                 ->dehydrateStateUsing(fn ($state) => $state)
-                ->helperText('Mínimo 8 caracteres, con mayúsculas, minúsculas, número y símbolo.'),
+                ->validationMessages([
+                    'required' => 'La contraseña es obligatoria para crear un nuevo registro.',
+                    'min' => 'La contraseña debe tener al menos 8 caracteres.',
+                    'letters' => 'La contraseña debe contener al menos una letra.',
+                    'mixedCase' => 'La contraseña debe contener al menos una letra mayúscula y una minúscula.',
+                    'numbers' => 'La contraseña debe contener al menos un número.',
+                    'symbols' => 'La contraseña debe contener al menos un símbolo.',
+                    'uncompromised' => 'La contraseña no debe haber sido comprometida en filtraciones de datos.',
+                ]),
 
             TextInput::make('password_confirmation')
                 ->label('Repite la contraseña')
@@ -90,7 +100,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
                 TextColumn::make('name')->label('Nombre')->searchable()->sortable(),
                 TextColumn::make('email')->label('Email')->searchable()->sortable(),

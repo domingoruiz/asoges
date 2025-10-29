@@ -45,17 +45,21 @@ class ContinentResource extends Resource
             TextInput::make('codigo')
                 ->label('Código')
                 ->maxLength(2)
-                ->required(),
+                ->required()
+                ->rule('alpha_num'),
 
             TextInput::make('nombre')
                 ->label('Nombre')
-                ->required(),
+                ->required()
+                ->maxLength(255)
+                ->rule('regex:/^[\p{L}\s\-\.\,\'\"]+$/u'),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated(true)
             ->columns([
                 TextColumn::make('codigo')->label('Código'),
                 TextColumn::make('nombre')->label('Nombre')->searchable(),
@@ -72,13 +76,6 @@ class ContinentResource extends Resource
                     }),
                 Tables\Actions\DeleteBulkAction::make()
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

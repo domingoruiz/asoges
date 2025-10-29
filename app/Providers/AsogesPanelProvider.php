@@ -32,8 +32,6 @@ class AsogesPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->sidebarCollapsibleOnDesktop(false)
-            ->sidebarFullyCollapsibleOnDesktop(false)
             ->topNavigation()
             ->discoverResources(in: app_path('Resources'), for: 'App\\Resources')
             ->discoverPages(in: app_path('Pages'), for: 'App\\Pages')

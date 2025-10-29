@@ -41,7 +41,8 @@ class CuentaBancariaResource extends Resource
                     Forms\Components\TextInput::make('nombre')
                         ->label('Nombre de la Cuenta')
                         ->required()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->rule('regex:/^[\p{L}\s]+$/u'),
 
                     Forms\Components\Select::make('entidad_id')
                         ->label('Entidad Bancaria')
@@ -53,12 +54,14 @@ class CuentaBancariaResource extends Resource
                     Forms\Components\TextInput::make('numero_cuenta')
                         ->label('Número de Cuenta')
                         ->maxLength(255)
-                        ->nullable(),
+                        ->nullable()
+                        ->rule('regex:/^[A-Z]{2}[0-9]+$/'),
 
                     Forms\Components\TextInput::make('swift_bic')
                         ->label('SWIFT/BIC')
                         ->maxLength(50)
-                        ->nullable(),
+                        ->nullable()
+                        ->rule('regex:/^[A-Z0-9]+$/'),
 
                     Forms\Components\Select::make('moneda_id')
                         ->label('Moneda')
@@ -69,7 +72,8 @@ class CuentaBancariaResource extends Resource
 
                     Forms\Components\DatePicker::make('fecha_apertura')
                         ->label('Fecha de Apertura')
-                        ->nullable(),
+                        ->nullable()
+                        ->rule('before_or_equal:today'),
                 ])
                 ->columns(2),
 
@@ -83,7 +87,8 @@ class CuentaBancariaResource extends Resource
                     Forms\Components\TextInput::make('cp')
                         ->label('CP')
                         ->maxLength(10)
-                        ->nullable(),
+                        ->nullable()
+                        ->rule('regex:/^\d{5}$/'),
 
                     Forms\Components\TextInput::make('localidad')
                         ->label('Localidad')
@@ -105,7 +110,8 @@ class CuentaBancariaResource extends Resource
                     Forms\Components\TextInput::make('telefono')
                         ->label('Teléfono')
                         ->maxLength(20)
-                        ->nullable(),
+                        ->nullable()
+                        ->rule('regex:/^\+?[1-9]\d{1,14}$/'),
 
                     Forms\Components\TextInput::make('email')
                         ->label('Email')
@@ -133,11 +139,11 @@ class CuentaBancariaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('entidadRel.nombre_fiscal')->label('Entidad')->sortable()->toggleable(),
                 Tables\Columns\TextColumn::make('numero_cuenta')->label('Número de Cuenta')->sortable(),
+                Tables\Columns\TextColumn::make('entidadRel.nombre_fiscal')->label('Entidad')->sortable()->toggleable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

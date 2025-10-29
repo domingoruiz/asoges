@@ -54,7 +54,7 @@ class SocioTipoResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),

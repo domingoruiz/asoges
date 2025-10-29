@@ -52,7 +52,8 @@ class EjercicioResource extends Resource
                     ignoreRecord: true,
                     modifyRuleUsing: fn (Unique $rule) =>
                     $rule->where('aso_id', session('aso_actual'))
-                ),
+                )
+                ->rule('regex:/^[\p{L}\s]+$/u'),
 
             Forms\Components\DatePicker::make('fch_inicio')
                 ->label('Fecha inicio')
@@ -70,7 +71,7 @@ class EjercicioResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->label('Nombre')

@@ -51,17 +51,20 @@ class LibroSociosResource extends Resource
                             ignoreRecord: true,
                             modifyRuleUsing: fn (Unique $rule) =>
                             $rule->where('aso_id', session('aso_actual'))
-                        ),
+                        )
+                        ->rule('alpha_num'),
 
                     Forms\Components\TextInput::make('nombre')
                         ->label('Nombre')
                         ->required()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->rule('regex:/^[\p{L}\s]+$/u'),
 
                     Forms\Components\TextInput::make('apellidos')
                         ->label('Apellidos')
                         ->required()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->rule('regex:/^[\p{L}\s]+$/u'),
 
                     Forms\Components\TextInput::make('dni')
                         ->label('DNI')
@@ -73,26 +76,48 @@ class LibroSociosResource extends Resource
                             ignoreRecord: true,
                             modifyRuleUsing: fn (Unique $rule) =>
                             $rule->where('aso_id', session('aso_actual'))
-                        ),
+                        )
+                        ->rule('regex:/^\d{8}[A-Za-z]$/'),
 
                     Forms\Components\DatePicker::make('fecha_nacimiento')
                         ->label('Fecha de nacimiento')
-                        ->required(),
+                        ->required()
+                        ->before(now()),
                 ])
                 ->columns(2),
 
             Forms\Components\Section::make('Contacto')
                 ->schema([
-                    Forms\Components\TextInput::make('telefono')->label('Teléfono')->maxLength(255),
-                    Forms\Components\TextInput::make('email')->label('Email')->email()->maxLength(255),
+                    Forms\Components\TextInput::make('telefono')
+                        ->label('Teléfono')
+                        ->maxLength(255)
+                        ->rule('regex:/^\+?[1-9]\d{1,14}$/'),
+
+                    Forms\Components\TextInput::make('email')
+                        ->label('Email')
+                        ->email()
+                        ->maxLength(255)
+                        ->required(),
                 ])
                 ->columns(2),
 
             Forms\Components\Section::make('Dirección')
                 ->schema([
-                    Forms\Components\TextInput::make('direccion')->label('Dirección')->maxLength(255),
-                    Forms\Components\TextInput::make('cp')->label('CP')->maxLength(10),
-                    Forms\Components\TextInput::make('localidad')->label('Localidad')->maxLength(100),
+                    Forms\Components\TextInput::make('direccion')
+                        ->label('Dirección')
+                        ->maxLength(255)
+                        ->required(),
+
+                    Forms\Components\TextInput::make('cp')
+                        ->label('CP')
+                        ->maxLength(10)
+                        ->required()
+                        ->rule('regex:/^\d{5}$/'),
+
+                    Forms\Components\TextInput::make('localidad')
+                        ->label('Localidad')
+                        ->maxLength(100)
+                        ->required(),
 
                     Forms\Components\Select::make('pais_id')
                         ->label('País')
@@ -100,6 +125,7 @@ class LibroSociosResource extends Resource
                         ->preload()
                         ->searchable()
                         ->reactive()
+                        ->required()
                         ->afterStateUpdated(function ($state, $set) {
                             $pais = Pai::find($state);
                             if ($pais) {
@@ -135,11 +161,21 @@ class LibroSociosResource extends Resource
                 ])
                 ->columns(2),
 
-            Forms\Components\Section::make('Tutor legal (si procede)')
+            Forms\Components\Section::make('Tutor legal')
                 ->schema([
-                    Forms\Components\TextInput::make('nombre_tutor')->label('Nombre tutor')->maxLength(255),
-                    Forms\Components\TextInput::make('dni_tutor')->label('DNI tutor')->maxLength(20),
-                    Forms\Components\TextInput::make('telefono_tutor')->label('Teléfono tutor')->maxLength(255),
+                    Forms\Components\TextInput::make('nombre_tutor')
+                        ->label('Nombre tutor')
+                        ->maxLength(255),
+
+                    Forms\Components\TextInput::make('dni_tutor')
+                        ->label('DNI tutor')
+                        ->maxLength(20)
+                        ->rule('regex:/^\d{8}[A-Za-z]$/'),
+
+                    Forms\Components\TextInput::make('telefono_tutor')
+                        ->label('Teléfono tutor')
+                        ->maxLength(255)
+                        ->rule('regex:/^\+?[1-9]\d{1,14}$/'),
                 ])
                 ->columns(3),
 
@@ -152,7 +188,7 @@ class LibroSociosResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
                 Tables\Columns\TextColumn::make('numero_socio')
                     ->label('Nº')

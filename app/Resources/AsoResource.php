@@ -14,6 +14,7 @@ use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class AsoResource extends Resource
 {
@@ -42,38 +43,54 @@ class AsoResource extends Resource
             ->schema([
                 Forms\Components\DatePicker::make('fch_constitucion')
                     ->required(),
+
                 Forms\Components\TextInput::make('nombre')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->rule('regex:/^[\p{L}\p{N}\s\-\.\,\(\)\&]+$/u'),
+
                 Forms\Components\TextInput::make('cif')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->rule('regex:/^[A-Z0-9]+$/'),
+
                 Forms\Components\TextInput::make('domicilio_social')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('nro_registro')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->nullable(),
+
                 Forms\Components\TextInput::make('nro_registro_municipal')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->nullable(),
+
                 Forms\Components\TextInput::make('telefono')
                     ->tel()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->rule('regex:/^\+?[1-9]\d{1,14}$/'),
+
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->required(),
+
                 Forms\Components\TextInput::make('web')
                     ->maxLength(255)
+                    ->nullable()
+                    ->url()
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
-                Tables\Columns\TextColumn::make('nombre')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('cif')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('nombre')
                     ->searchable()
             ])
             ->bulkActions([
@@ -88,13 +105,6 @@ class AsoResource extends Resource
                     }),
                 Tables\Actions\DeleteBulkAction::make()
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

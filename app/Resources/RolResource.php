@@ -45,13 +45,14 @@ class RolResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255)
+                    ->unique(ignoreRecord: true)
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
+            ->paginated(true)
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable()
@@ -68,13 +69,6 @@ class RolResource extends Resource
                     }),
                 Tables\Actions\DeleteBulkAction::make()
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

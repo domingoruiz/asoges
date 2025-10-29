@@ -18,12 +18,12 @@ class SelectAso extends Page implements Forms\Contracts\HasForms
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $title = 'Seleccionar Asociación';
 
-    public int|string|null $aso_usr_id = null;
+    public int|string|null $aso_id = null;
 
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Select::make('aso_usr_id')
+            Forms\Components\Select::make('aso_id')
                 ->label('Selecciona tu asociación')
                 ->options($this->getOptions())
                 ->required(),
@@ -39,7 +39,7 @@ class SelectAso extends Page implements Forms\Contracts\HasForms
             ->with(['aso', 'rol'])
             ->get()
             ->mapWithKeys(fn (AsoUsr $asoUsr) => [
-                $asoUsr->id => "{$asoUsr->aso->nombre} ({$asoUsr->rol->nombre})",
+                $asoUsr->aso_id => "{$asoUsr->aso->nombre} ({$asoUsr->rol->nombre})",
             ])
             ->toArray();
 
@@ -52,7 +52,7 @@ class SelectAso extends Page implements Forms\Contracts\HasForms
 
     public function submit(): void
     {
-        $selected = $this->aso_usr_id;
+        $selected = $this->aso_id;
         $options  = $this->getOptions();
 
         session([

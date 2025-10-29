@@ -45,5 +45,13 @@ class RolSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
         ]);
+
+        Rol::create([
+            'nombre' => 'Socio',
+            'alt_usr' => 1,
+            'mod_usr' => 1,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
     }
 }
