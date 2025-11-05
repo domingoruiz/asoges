@@ -23,7 +23,7 @@ class LibroSociosResource extends Resource
     protected static ?string $navigationGroup = null;
 
     public static function getNavigationLabel(): string { return 'Libro de Socios'; }
-    public static function getModelLabel(): string { return 'Libro de Socios'; }
+    public static function getModelLabel(): string { return 'Socio'; }
     public static function getPluralModelLabel(): string { return 'Libro de Socios'; }
 
     public static function canAccess(): bool
