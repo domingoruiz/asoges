@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Models;
+
+use App\Traits\UserStamps;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Ubicacion extends Model
+{
+    use SoftDeletes, UserStamps;
+
+    protected $table = 'ubicacion';
+
+    protected $fillable = [
+        'alt_usr',
+        'mod_usr',
+        'aso_id',
+        'nombre',
+        'descripcion',
+        'categoria_padre_id',
+    ];
+
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
+
+    public function aso() { return $this->belongsTo(Aso::class, 'aso_id'); }
+    public function createdBy() { return $this->belongsTo(User::class, 'alt_usr'); }
+    public function updatedBy() { return $this->belongsTo(User::class, 'mod_usr'); }
+
+    public function padre() { return $this->belongsTo(self::class, 'categoria_padre_id'); }
+    public function hijos() { return $this->hasMany(self::class, 'categoria_padre_id'); }
+
+    public function getRutaAttribute(): string
+    {
+        $ruta = [$this->nombre];
+        $n = $this->padre;
+        $g = 0;
+        while ($n) {
+            array_unshift($ruta, $n->nombre);
+            $n = $n->padre;
+            if (++$g > 50) break;
+        }
+        return implode(' / ', $ruta);
+    }
+}
