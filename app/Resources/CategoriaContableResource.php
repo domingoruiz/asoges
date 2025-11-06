@@ -20,11 +20,11 @@ class CategoriaContableResource extends Resource
     protected static ?string $model = CategoriaContable::class;
 
     protected static ?string $navigationGroup = 'Maestros';
-    protected static ?string $navigationLabel = 'Categorías contables';
+    protected static ?string $navigationLabel = 'Categorías Contables';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function getModelLabel(): string { return 'Categoría contable'; }
-    public static function getPluralModelLabel(): string { return 'Categorías contables'; }
+    public static function getModelLabel(): string { return 'Categoría Contable'; }
+    public static function getPluralModelLabel(): string { return 'Categorías Contables'; }
 
     public static function canAccess(): bool
     {
@@ -75,7 +75,6 @@ class CategoriaContableResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
             ])

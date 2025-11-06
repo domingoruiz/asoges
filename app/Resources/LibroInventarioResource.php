@@ -22,11 +22,11 @@ class LibroInventarioResource extends Resource
 {
     protected static ?string $model = LibroInventario::class;
 
-    protected static ?string $navigationLabel = 'Libro de Inventario';
+    protected static ?string $navigationLabel = 'Libro Inventario';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-    public static function getModelLabel(): string { return 'Movimiento de Inventario'; }
-    public static function getPluralModelLabel(): string { return 'Libro de Inventario'; }
+    public static function getModelLabel(): string { return 'Movimiento Inventario'; }
+    public static function getPluralModelLabel(): string { return 'Libro Inventario'; }
 
     public static function canAccess(): bool
     {
@@ -107,7 +107,8 @@ class LibroInventarioResource extends Resource
                         ->numeric()
                         ->required()
                         ->step('0.01')
-                        ->minValue(0),
+                        ->minValue(0)
+                        ->suffix('€'),
                 ])
                 ->columns(2),
 
@@ -164,7 +165,6 @@ class LibroInventarioResource extends Resource
                     ->formatStateUsing(fn($state, $record) => $record->ubicacion?->ruta ?? '')
                     ->wrap()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('entidad.nombre_fiscal')->label('Entidad')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('cantidad')
                     ->label('Cantidad')
                     ->sortable()
@@ -174,8 +174,9 @@ class LibroInventarioResource extends Resource
                 Tables\Columns\TextColumn::make('valor')
                     ->label('Valor')
                     ->sortable()
+                    ->formatStateUsing(fn($state) => number_format($state, 2, ',', '.') . ' €')
                     ->summarize([
-                        Sum::make()->label('Total valor')->formatStateUsing(fn($state) => number_format($state, 2, ',', '.')),
+                        Sum::make()->label('Total')->formatStateUsing(fn($state) => number_format($state, 2, ',', '.') . ' €'),
                     ]),
             ])
             ->filters([

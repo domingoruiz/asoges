@@ -71,7 +71,6 @@ class TipoTransaccionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->paginated(false) // sin paginación (plantilla Asoges)
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
             ])

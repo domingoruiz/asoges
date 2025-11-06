@@ -17,15 +17,17 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Currency;
 use Filament\Forms\Get;
 use Filament\Tables\Columns\Summarizers\Sum;
+use Filament\Support\Colors\Color;
+use Filament\Forms\Set;
 
 class LibroContabilidadResource extends Resource
 {
     protected static ?string $model = LibroContabilidad::class;
-    protected static ?string $navigationLabel = 'Libro de Contabilidad';
+    protected static ?string $navigationLabel = 'Libro Contabilidad';
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     public static function getModelLabel(): string { return 'Apunte Contable'; }
-    public static function getPluralModelLabel(): string { return 'Libro de Contabilidad'; }
+    public static function getPluralModelLabel(): string { return 'Libro Contabilidad'; }
 
     public static function canAccess(): bool
     {
@@ -125,18 +127,8 @@ class LibroContabilidadResource extends Resource
                 ])
                 ->columns(3),
 
-            Forms\Components\Section::make('Importe y concepto')
+            Forms\Components\Section::make('Concepto')
                 ->schema([
-                    Forms\Components\TextInput::make('importe')
-                        ->label('Importe')
-                        ->numeric()
-                        ->required()
-                        ->step('0.01')
-                        ->minValue(0.01)
-                        ->suffix(fn (Get $get) => optional(Currency::find($get('moneda_id')))->codigo
-                            ?? optional(Currency::find($get('moneda_id')))->simbolo
-                            ?? ''),
-
                     Forms\Components\TextInput::make('concepto')
                         ->label('Concepto')
                         ->required()
@@ -147,6 +139,57 @@ class LibroContabilidadResource extends Resource
                         ->rows(3),
                 ])
                 ->columns(2),
+
+            Forms\Components\Section::make('Importe')
+                ->schema([
+                    Forms\Components\ToggleButtons::make('signo')
+                        ->label('Tipo')
+                        ->options([
+                            '+' => 'Ingreso',
+                            '-' => 'Gasto',
+                        ])
+                        ->colors([
+                            '+' => 'success',
+                            '-' => 'danger',
+                        ])
+                        ->icons([
+                            '+' => 'heroicon-o-arrow-trending-up',
+                            '-' => 'heroicon-o-arrow-trending-down',
+                        ])
+                        ->inline()
+                        ->default('+')
+                        ->reactive()
+                        ->afterStateHydrated(function (Get $get, Set $set, ?\Illuminate\Database\Eloquent\Model $record) {
+                            if ($record) {
+                                $set('signo', ($record->importe ?? 0) < 0 ? '-' : '+');
+                            }
+                        })
+                        ->columnSpan(1),
+
+                    Forms\Components\TextInput::make('importe')
+                        ->label('Importe')
+                        ->numeric()
+                        ->required()
+                        ->step('0.01')
+                        ->minValue(0.01)
+                        ->suffix(fn (Get $get) =>
+                            optional(Currency::find($get('moneda_id')))->codigo
+                            ?? optional(Currency::find($get('moneda_id')))->simbolo
+                            ?? ''
+                        )
+                        ->reactive()
+                        ->afterStateHydrated(function (Set $set, ?\Illuminate\Database\Eloquent\Model $record) {
+                            if ($record && $record->importe !== null) {
+                                $set('importe', abs($record->importe));
+                            }
+                        })
+                        ->dehydrateStateUsing(function ($state, Get $get) {
+                            $signo = $get('signo') === '-' ? -1 : 1;
+                            return $signo * abs((float) $state);
+                        })
+                        ->columnSpan(2),
+                ])
+                ->columns(3),
 
             Forms\Components\Hidden::make('aso_id')
                 ->default(fn () => session('aso_actual'))
@@ -170,15 +213,19 @@ class LibroContabilidadResource extends Resource
                 Tables\Columns\TextColumn::make('importe')
                     ->label('Importe')
                     ->sortable()
+                    ->color(fn ($record) => $record->importe < 0 ? Color::Red : Color::Emerald)
                     ->formatStateUsing(function ($state, $record) {
-                        $num = number_format((float) $state, 2, ',', '.');
+                        $num = number_format(abs((float) $state), 2, ',', '.');
+                        $sign = $state < 0 ? '−' : '+';
                         $cur = $record->moneda?->codigo ?? $record->moneda?->simbolo ?? '';
-                        return trim("$num $cur");
+                        return "$sign $num $cur";
                     })
                     ->summarize([
-                        Sum::make()
+                        \Filament\Tables\Columns\Summarizers\Sum::make()
                             ->label('Total')
-                            ->formatStateUsing(fn ($state) => number_format((float) $state, 2, ',', '.')),
+                            ->formatStateUsing(function ($state) {
+                                return number_format((float) $state, 2, ',', '.') . ' €';
+                            }),
                     ]),
             ])
             ->filters([

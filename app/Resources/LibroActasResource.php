@@ -19,11 +19,11 @@ use App\Models\EstadoActa;
 class LibroActasResource extends Resource
 {
     protected static ?string $model = LibroActa::class;
-    protected static ?string $navigationLabel = 'Libro de Actas';
+    protected static ?string $navigationLabel = 'Libro Actas';
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     public static function getModelLabel(): string { return 'Acta'; }
-    public static function getPluralModelLabel(): string { return 'Actas'; }
+    public static function getPluralModelLabel(): string { return 'Libro Actas'; }
 
     public static function canAccess(): bool
     {
