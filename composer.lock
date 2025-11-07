@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c5269e1e1298e20a4e5af27b6d9e109",
+    "content-hash": "055657f74aaf62584d961969c1761c2d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2175,6 +2175,128 @@
                 }
             ],
             "time": "2025-08-22T14:27:06+00:00"
+        },
+        {
+            "name": "jeffersongoncalves/filament-cookie-consent",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jeffersongoncalves/filament-cookie-consent.git",
+                "reference": "f6c4bcccbed3120c9c27172cf62c5866b4bff48b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jeffersongoncalves/filament-cookie-consent/zipball/f6c4bcccbed3120c9c27172cf62c5866b4bff48b",
+                "reference": "f6c4bcccbed3120c9c27172cf62c5866b4bff48b",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "jeffersongoncalves/laravel-cookie-consent": "^1.0",
+                "laravel/framework": "^11.0|^12.0",
+                "php": "^8.2|^8.3",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "orchestra/testbench": "^9.0|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JeffersonGoncalves\\Filament\\CookieConsent\\CookieConsentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JeffersonGoncalves\\Filament\\CookieConsent\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jefferson Gonçalves",
+                    "email": "gerson.simao.92@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This Filament package provides a simple and elegant way to implement cookie consent on your website, ensuring compliance with privacy regulations like GDPR and CCPA. It offers a clean and customizable interface, allowing you to easily manage and display cookie consent banners and preferences.",
+            "homepage": "https://github.com/jeffersongoncalves/filament-cookie-consent",
+            "keywords": [
+                "filament-cookie-consent",
+                "jeffersongoncalves",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/jeffersongoncalves/filament-cookie-consent/issues",
+                "source": "https://github.com/jeffersongoncalves/filament-cookie-consent/tree/v1.0.5"
+            },
+            "time": "2025-07-17T17:02:29+00:00"
+        },
+        {
+            "name": "jeffersongoncalves/laravel-cookie-consent",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jeffersongoncalves/laravel-cookie-consent.git",
+                "reference": "0faf45bf57628f966732c9445bc151762816b923"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jeffersongoncalves/laravel-cookie-consent/zipball/0faf45bf57628f966732c9445bc151762816b923",
+                "reference": "0faf45bf57628f966732c9445bc151762816b923",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^11.0|^12.0",
+                "php": "^8.2|^8.3",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "orchestra/testbench": "^9.0|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JeffersonGoncalves\\CookieConsent\\CookieConsentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JeffersonGoncalves\\CookieConsent\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jefferson Gonçalves",
+                    "email": "gerson.simao.92@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This Laravel package provides a simple and elegant way to implement cookie consent on your website, ensuring compliance with privacy regulations like GDPR and CCPA. It offers a clean and customizable interface, allowing you to easily manage and display cookie consent banners and preferences.",
+            "homepage": "https://github.com/jeffersongoncalves/laravel-cookie-consent",
+            "keywords": [
+                "jeffersongoncalves",
+                "laravel",
+                "laravel-cookie-consent"
+            ],
+            "support": {
+                "issues": "https://github.com/jeffersongoncalves/laravel-cookie-consent/issues",
+                "source": "https://github.com/jeffersongoncalves/laravel-cookie-consent/tree/v1.1.1"
+            },
+            "time": "2025-03-03T22:11:47+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",

@@ -59,11 +59,6 @@ class AsogesPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->plugin(\Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
-                ->navigationGroup('System')
-                ->navigationSort(2)
-                ->navigationIcon('heroicon-o-document-text') // <-- usa string, no Heroicon
-                ->navigationLabel('Log Viewer'));
+            ]);
     }
 }
