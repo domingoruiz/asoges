@@ -56,4 +56,28 @@ class GestorDocumental extends Model
             }
         });
     }
+
+    public function tipoDocumento()
+    {
+        return $this->belongsTo(TipoDocumento::class, 'tipo_documento_id');
+    }
+
+    public function entidad()
+    {
+        return $this->belongsTo(Entidad::class, 'entidad_id');
+    }
+
+    public function ejercicio()
+    {
+        return $this->belongsTo(Ejercicio::class, 'ejercicio_id');
+    }
+
+    public function estado()
+    {
+        return $this->belongsTo(EstadoDocumento::class, 'estado_documento');
+    }
+
+    public function createdBy() { return $this->belongsTo(User::class, 'alt_usr'); }
+
+    public function updatedBy() { return $this->belongsTo(User::class, 'mod_usr'); }
 }

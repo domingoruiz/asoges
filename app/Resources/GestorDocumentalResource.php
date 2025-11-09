@@ -216,13 +216,12 @@ class GestorDocumentalResource extends Resource
             ->defaultSort('fecha_documento', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('fecha_documento')->label('Fecha')->date('d-m-Y')->sortable(),
-                Tables\Columns\TextColumn::make('direccion_documento')->label('Dir.')->badge()->sortable(),
+                Tables\Columns\TextColumn::make('numero_serie')->label('Nro ser')->sortable(),
+                Tables\Columns\TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('tipoDocumento.nombre')
                     ->label('Tipo')
                     ->formatStateUsing(fn ($state, $record) => $record->tipoDocumento?->ruta ?? $record->tipoDocumento?->nombre ?? ''),
-                Tables\Columns\TextColumn::make('numero_serie')->label('Nro ser')->sortable(),
-                Tables\Columns\TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('estado.nombre')->label('Estado')->badge()->sortable(),
+                Tables\Columns\TextColumn::make('estado.nombre')->label('Estado')->sortable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('rango_fechas')

@@ -18,12 +18,12 @@ class GestorDocumentalExport implements FromCollection, WithHeadings
                 'createdBy:id,name','updatedBy:id,name',
                 'tipoDocumento:id,nombre,categoria_padre_id',
                 'entidad:id,nombre_fiscal',
-                'ejercicio:id,nombre,fecha_inicio,fecha_fin',
+                'ejercicio:id,nombre',
                 'estado:id,nombre',
             ])
             ->whereIn('id', $this->ids)
             ->get([
-                'id','aso_id','tipo_documento_id','entidad_id','ejercicio_id','estado_documento_id',
+                'id','aso_id','tipo_documento_id','entidad_id','ejercicio_id','estado_documento',
                 'direccion_documento','fecha_documento','numero_serie','ref_externa','nombre','descripcion',
                 'archivo','alt_usr','mod_usr','created_at','updated_at','deleted_at',
             ])
