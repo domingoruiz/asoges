@@ -2,14 +2,16 @@
 
 namespace App\Pages;
 
+use Filament\Filament;
+use Throwable;
 use Filament\Pages\Page;
 use Composer\InstalledVersions;
 
 class SystemInfo extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-cog';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-cog';
     protected static ?string $navigationLabel = 'System info';
-    protected static string $view = 'pages.system-info';
+    protected string $view = 'pages.system-info';
 
     public function getLaravelVersion(): string
     {
@@ -19,16 +21,16 @@ class SystemInfo extends Page
     public function getFilamentVersion(): ?string
     {
         try {
-            if (class_exists(\Filament\Filament::class) && defined(\Filament\Filament::class . '::VERSION')) {
-                return \Filament\Filament::VERSION;
+            if (class_exists(Filament::class) && defined(Filament::class . '::VERSION')) {
+                return Filament::VERSION;
             }
-        } catch (\Throwable $e) {}
+        } catch (Throwable $e) {}
 
         try {
             if (class_exists(InstalledVersions::class) && InstalledVersions::isInstalled('filament/filament')) {
                 return InstalledVersions::getPrettyVersion('filament/filament');
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // ignore
         }
 
@@ -69,7 +71,7 @@ class SystemInfo extends Page
             $results = collect($results)->unique('name')->values()->all();
 
             return $results;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return [];
         }
     }

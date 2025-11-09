@@ -2,6 +2,8 @@
 
 namespace App\Exports;
 
+use App\Models\CategoriaInventario;
+use App\Models\Ubicacion;
 use App\Models\LibroInventario;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -24,8 +26,8 @@ class LibroInventarioExport implements FromCollection, WithHeadings
             ->whereIn('id', $this->ids)
             ->get()
             ->map(function ($r) {
-                $catRuta = $this->ruta($r->categoria, 'categoria_padre_id', \App\Models\CategoriaInventario::class);
-                $ubiRuta = $this->ruta($r->ubicacion, 'categoria_padre_id', \App\Models\Ubicacion::class);
+                $catRuta = $this->ruta($r->categoria, 'categoria_padre_id', CategoriaInventario::class);
+                $ubiRuta = $this->ruta($r->ubicacion, 'categoria_padre_id', Ubicacion::class);
                 return [
                     'ID' => $r->id,
                     'Asociación' => $r->aso?->nombre,

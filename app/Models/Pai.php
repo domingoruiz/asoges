@@ -27,12 +27,12 @@ class Pai extends Model
 
     public function continenteRel(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Continent::class, 'continente');
+        return $this->belongsTo(Continent::class, 'continente');
     }
 
     public function monedaRel(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Currency::class, 'moneda');
+        return $this->belongsTo(Currency::class, 'moneda');
     }
 
     public function createdBy()

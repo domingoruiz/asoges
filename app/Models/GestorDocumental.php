@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Storage;
 use App\Traits\UserStamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -42,16 +43,16 @@ class GestorDocumental extends Model
     protected static function booted(): void
     {
         static::deleting(function ($record) {
-            if ($record->archivo && \Storage::disk('public')->exists($record->archivo)) {
-                \Storage::disk('public')->delete($record->archivo);
+            if ($record->archivo && Storage::disk('public')->exists($record->archivo)) {
+                Storage::disk('public')->delete($record->archivo);
             }
         });
 
         static::updating(function ($record) {
             if ($record->isDirty('archivo')) {
                 $original = $record->getOriginal('archivo');
-                if ($original && \Storage::disk('public')->exists($original)) {
-                    \Storage::disk('public')->delete($original);
+                if ($original && Storage::disk('public')->exists($original)) {
+                    Storage::disk('public')->delete($original);
                 }
             }
         });

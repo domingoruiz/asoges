@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Pages\SelectAso;
+use App\Pages\Dashboard;
+use Filament\Widgets\AccountWidget;
+use Filament\Widgets\FilamentInfoWidget;
 use App\Http\Middleware\SelectAsoMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -36,13 +40,13 @@ class AsogesPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Resources'), for: 'App\\Resources')
             ->discoverPages(in: app_path('Pages'), for: 'App\\Pages')
             ->pages([
-                Pages\SelectAso::class,
-                Pages\Dashboard::class
+                SelectAso::class,
+                Dashboard::class
             ])
             ->discoverWidgets(in: app_path('Widgets'), for: 'App\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                AccountWidget::class,
+                FilamentInfoWidget::class,
             ])
             ->authGuard('web')
             ->middleware([

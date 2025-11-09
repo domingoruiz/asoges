@@ -2,19 +2,22 @@
 
 namespace App\Pages;
 
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Components\Select;
 use App\Models\AsoUsr;
 use Filament\Forms;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 
-class SelectAso extends Page implements Forms\Contracts\HasForms
+class SelectAso extends Page implements HasForms
 {
-    use Forms\Concerns\InteractsWithForms;
+    use InteractsWithForms;
 
-    protected static string $view = 'pages.select-aso';
+    protected string $view = 'pages.select-aso';
     protected static ?string $slug = 'select-aso';
-    protected static ?string $navigationIcon = null;
-    protected static ?string $navigationGroup = null;
+    protected static string | \BackedEnum | null $navigationIcon = null;
+    protected static string | \UnitEnum | null $navigationGroup = null;
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $title = 'Seleccionar Asociación';
 
@@ -23,7 +26,7 @@ class SelectAso extends Page implements Forms\Contracts\HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Select::make('aso_id')
+            Select::make('aso_id')
                 ->label('Selecciona tu asociación')
                 ->options($this->getOptions())
                 ->required(),
@@ -59,7 +62,7 @@ class SelectAso extends Page implements Forms\Contracts\HasForms
             'aso_actual' => $selected,
             'rol_activo' => $selected === 'superadmin'
                 ? 'superadmin'
-                : \App\Models\AsoUsr::find($selected)?->rol_id,
+                : AsoUsr::find($selected)?->rol_id,
             'aso_label'  => $options[$selected] ?? null,
         ]);
 
