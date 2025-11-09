@@ -9,14 +9,24 @@ class SelectAsoMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        if (! auth()->check()) {
+            return $next($request);
+        }
+
         if (
-            ! auth()->check()
-            || $request->is('select-aso')
-            || session()->has('rol_activo')
+            $request->routeIs([
+                'filament.asoges.auth.*',
+                'filament.asoges.multi-factor.*',
+                'filament.asoges.pages.select-aso'
+            ])
         ) {
             return $next($request);
         }
 
-        return redirect()->route('filament.asoges.pages.select-aso');
+        if (session()->has('rol_activo') && filled(session('rol_activo'))) {
+            return $next($request);
+        }
+
+        return to_route('filament.asoges.pages.select-aso');
     }
 }
