@@ -10,8 +10,13 @@ use Composer\InstalledVersions;
 class SystemInfo extends Page
 {
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-cog';
-    protected static ?string $navigationLabel = 'System info';
+    protected static ?string $navigationLabel = 'Sistema';
     protected string $view = 'pages.system-info';
+
+    public static function canAccess(): bool
+    {
+        return session('rol_activo') === 'superadmin';
+    }
 
     public function getLaravelVersion(): string
     {

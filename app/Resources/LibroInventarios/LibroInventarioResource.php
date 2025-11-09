@@ -137,7 +137,7 @@ class LibroInventarioResource extends Resource
             Hidden::make('aso_id')
                 ->default(fn () => session('aso_actual'))
                 ->dehydrated(),
-        ]);
+        ])->columns(1);
     }
 
     private static function buildTreeOptions(string $model): array

@@ -3,6 +3,7 @@
 namespace App\Pages;
 
 use Filament\Pages\Page;
+use Filament\Actions\Action;
 
 class Dashboard extends Page
 {
@@ -16,5 +17,16 @@ class Dashboard extends Page
     public function getHeading(): string
     {
         return 'Panel principal';
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('cambiarAso')
+                ->label('Cambiar asociación')
+                ->icon('heroicon-o-arrow-path')
+                ->color('secondary')
+                ->url(route('filament.asoges.pages.select-aso')),
+        ];
     }
 }

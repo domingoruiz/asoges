@@ -1,30 +1,35 @@
 <x-filament::page>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="col-span-1">
-            <x-filament::card>
-                <h2 class="text-lg font-medium">Laravel</h2>
-                <p class="mt-2 text-sm">{{ $this->getLaravelVersion() }}</p>
-            </x-filament::card>
-        </div>
-
-        <div class="col-span-1">
-            <x-filament::card>
-                <h2 class="text-lg font-medium">Filament</h2>
-                <p class="mt-2 text-sm">{{ $this->getFilamentVersion() ?? 'no disponible' }}</p>
-            </x-filament::card>
-        </div>
-
-        <div class="col-span-1">
-            <x-filament::card>
-                <h2 class="text-lg font-medium">PHP</h2>
-                <p class="mt-2 text-sm">v{{ phpversion() }}</p>
-            </x-filament::card>
-        </div>
+    <div class="mt-6">
+        <x-filament::card>
+            <h2 class="text-lg font-medium"><b>PHP</b></h2>
+            <p class="mt-2 text-sm">v{{ phpversion() }}</p>
+        </x-filament::card>
     </div>
 
     <div class="mt-6">
         <x-filament::card>
-            <h3 class="text-lg font-medium">Paquetes / Plugins Filament</h3>
+            <h2 class="text-lg font-medium"><b>Laravel</b></h2>
+            <p class="mt-2 text-sm">{{ $this->getLaravelVersion() }}</p>
+        </x-filament::card>
+    </div>
+
+    <div class="mt-6">
+        <x-filament::card>
+            <h2 class="text-lg font-medium"><b>Filament</b></h2>
+            <p class="mt-2 text-sm">{{ $this->getFilamentVersion() ?? 'no disponible' }}</p>
+        </x-filament::card>
+    </div>
+
+    <div class="mt-6">
+        <x-filament::card>
+            <h2 class="text-lg font-medium"><b>Asoges</b></h2>
+            <p class="mt-2 text-sm">{{ config('app.version') ?? 'no disponible' }}</p>
+        </x-filament::card>
+    </div>
+
+    <div class="mt-6">
+        <x-filament::card>
+            <h3 class="text-lg font-medium"><b>Paquetes Filament</b></h3>
 
             @php $packages = $this->getFilamentPackages(); @endphp
 
@@ -55,7 +60,7 @@
 
     <div class="mt-6">
         <x-filament::card>
-            <h3 class="text-lg font-medium">phpinfo()</h3>
+            <h3 class="text-lg font-medium"><b>Versión PHP</b></h3>
             <div class="mt-3 overflow-auto text-xs leading-tight bg-white p-4 rounded phpinfo-block">
                 {!! $this->getPhpInfoHtml() !!}
             </div>
