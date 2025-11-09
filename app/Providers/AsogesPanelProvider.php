@@ -59,6 +59,7 @@ class AsogesPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->profile();
     }
 }
