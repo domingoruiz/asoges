@@ -43,4 +43,9 @@ class LibroProyecto extends Model
     {
         return $this->belongsTo(User::class, 'mod_usr');
     }
+
+    public function documentos()
+    {
+        return $this->hasMany(\App\Models\GestorDocumental::class, 'libro_proyecto_id');
+    }
 }

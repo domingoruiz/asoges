@@ -40,6 +40,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Currency;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Support\Colors\Color;
+use App\Resources\LibroContabilidads\RelationManagers\DocumentosRelationManager;
 
 class LibroContabilidadResource extends Resource
 {
@@ -318,6 +319,13 @@ class LibroContabilidadResource extends Resource
             'index'  => ListLibroContabilidad::route('/'),
             'create' => CreateLibroContabilidad::route('/create'),
             'edit'   => EditLibroContabilidad::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            DocumentosRelationManager::class,
         ];
     }
 }

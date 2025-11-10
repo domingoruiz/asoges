@@ -17,6 +17,7 @@ class GestorDocumental extends Model
     protected $fillable = [
         'alt_usr','mod_usr','aso_id','tipo_documento_id','entidad_id','ejercicio_id','estado_documento',
         'direccion_documento','fecha_documento','numero_serie','ref_externa','nombre','descripcion','archivo',
+        'libro_actas_id','socio_id','contabilidad_id','inventario_id','libro_proyecto_id'
     ];
 
     protected $casts = [

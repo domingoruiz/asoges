@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\UserStamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\GestorDocumental;
 
 class LibroActa extends Model
 {
@@ -41,8 +42,14 @@ class LibroActa extends Model
     public function asistentes() { return $this->hasMany(Asistente::class, 'acta_id'); }
     public function createdBy() { return $this->belongsTo(User::class, 'alt_usr'); }
     public function updatedBy() { return $this->belongsTo(User::class, 'mod_usr'); }
+
     public function getRangoHoraAttribute(): string
     {
         return trim(($this->hora_inicio ?? '') . ' - ' . ($this->hora_fin ?? ''));
+    }
+
+    public function documentos()
+    {
+        return $this->hasMany(GestorDocumental::class, 'libro_actas_id');
     }
 }

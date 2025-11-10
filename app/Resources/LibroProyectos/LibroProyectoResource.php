@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rules\Unique;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Resources\LibroProyectos\RelationManagers\DocumentosRelationManager;
 
 class LibroProyectoResource extends Resource
 {
@@ -151,6 +152,13 @@ class LibroProyectoResource extends Resource
             'index'  => Pages\ListLibroProyectos::route('/'),
             'create' => Pages\CreateLibroProyecto::route('/create'),
             'edit'   => Pages\EditLibroProyecto::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            DocumentosRelationManager::class,
         ];
     }
 }

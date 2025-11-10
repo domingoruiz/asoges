@@ -29,6 +29,14 @@ use App\Models\TipoDocumento;
 use App\Models\Entidad;
 use App\Models\Ejercicio;
 use App\Models\EstadoDocumento;
+
+// ✅ Tus modelos de libros
+use App\Models\LibroActa;
+use App\Models\LibroSocios;
+use App\Models\LibroContabilidad;
+use App\Models\LibroInventario;
+use App\Models\LibroProyecto;
+
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -171,6 +179,88 @@ class GestorDocumentalResource extends Resource
                         ->preload()
                         ->options(fn () =>
                         EstadoDocumento::query()
+                            ->where('aso_id', session('aso_actual'))
+                            ->orderBy('nombre')
+                            ->pluck('nombre', 'id')
+                            ->toArray()
+                        ),
+                ])
+                ->columns(2),
+
+            Section::make('Enlaces a libros')
+                ->schema([
+                    // ACTAS
+                    Select::make('libro_actas_id')
+                        ->label('Acta')
+                        ->placeholder('— Sin enlace —')
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () =>
+                        LibroActa::query()
+                            ->where('aso_id', session('aso_actual'))
+                            ->orderByDesc('fecha')
+                            ->limit(500)
+                            ->pluck('titulo', 'id')
+                            ->toArray()
+                        ),
+
+                    // SOCIOS
+                    Select::make('socio_id')
+                        ->label('Socio')
+                        ->placeholder('— Sin enlace —')
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () =>
+                        LibroSocios::query()
+                            ->where('aso_id', session('aso_actual'))
+                            ->orderBy('numero_socio')
+                            ->get(['id','numero_socio','nombre','apellidos'])
+                            ->mapWithKeys(fn ($s) => [
+                                $s->id => trim(($s->numero_socio ? ($s->numero_socio.' — ') : '').$s->nombre.' '.$s->apellidos),
+                            ])
+                            ->toArray()
+                        ),
+
+                    // CONTABILIDAD
+                    Select::make('contabilidad_id')
+                        ->label('Asiento contable')
+                        ->placeholder('— Sin enlace —')
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () =>
+                        LibroContabilidad::query()
+                            ->where('aso_id', session('aso_actual'))
+                            ->orderByDesc('fecha_contable')
+                            ->limit(500)
+                            ->get(['id','fecha_contable','concepto','importe'])
+                            ->mapWithKeys(fn ($a) => [
+                                $a->id => sprintf('%s — %s — %0.2f', $a->fecha_contable?->format('Y-m-d'), $a->concepto, $a->importe),
+                            ])
+                            ->toArray()
+                        ),
+
+                    // INVENTARIO
+                    Select::make('inventario_id')
+                        ->label('Inventario')
+                        ->placeholder('— Sin enlace —')
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () =>
+                        LibroInventario::query()
+                            ->where('aso_id', session('aso_actual'))
+                            ->orderBy('nombre')
+                            ->pluck('nombre', 'id')
+                            ->toArray()
+                        ),
+
+                    // PROYECTOS
+                    Select::make('libro_proyecto_id')
+                        ->label('Proyecto')
+                        ->placeholder('— Sin enlace —')
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () =>
+                        LibroProyecto::query()
                             ->where('aso_id', session('aso_actual'))
                             ->orderBy('nombre')
                             ->pluck('nombre', 'id')

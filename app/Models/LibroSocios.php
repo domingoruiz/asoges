@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\UserStamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\GestorDocumental;
 
 class LibroSocios extends Model
 {
@@ -51,5 +52,10 @@ class LibroSocios extends Model
     public function getNombreCompletoAttribute(): string
     {
         return trim(($this->nombre ?? '').' '.($this->apellidos ?? ''));
+    }
+
+    public function documentos()
+    {
+        return $this->hasMany(GestorDocumental::class, 'socio_id');
     }
 }

@@ -39,4 +39,9 @@ class LibroInventario extends Model
     public function entidad() { return $this->belongsTo(Entidad::class, 'entidad_id'); }
     public function createdBy() { return $this->belongsTo(User::class, 'alt_usr'); }
     public function updatedBy() { return $this->belongsTo(User::class, 'mod_usr'); }
+
+    public function documentos()
+    {
+        return $this->hasMany(GestorDocumental::class, 'inventario_id');
+    }
 }

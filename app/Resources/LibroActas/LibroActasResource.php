@@ -33,6 +33,7 @@ use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\TipoActa;
 use App\Models\EstadoActa;
+use App\Resources\LibroActas\RelationManagers\DocumentosRelationManager;
 
 class LibroActasResource extends Resource
 {
@@ -178,6 +179,7 @@ class LibroActasResource extends Resource
     {
         return [
             AsistentesRelationManager::class,
+            DocumentosRelationManager::class
         ];
     }
 

@@ -36,4 +36,9 @@ class LibroContabilidad extends Model
 
     public function createdBy()        { return $this->belongsTo(User::class, 'alt_usr'); }
     public function updatedBy()        { return $this->belongsTo(User::class, 'mod_usr'); }
+
+    public function documentos()
+    {
+        return $this->hasMany(GestorDocumental::class, 'contabilidad_id');
+    }
 }

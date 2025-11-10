@@ -32,6 +32,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Resources\LibroInventarios\RelationManagers\DocumentosRelationManager;
 
 class LibroInventarioResource extends Resource
 {
@@ -235,6 +236,13 @@ class LibroInventarioResource extends Resource
             ->recordActions([
                 EditAction::make()->label('Editar'),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            DocumentosRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

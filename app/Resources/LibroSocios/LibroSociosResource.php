@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rules\Unique;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Resources\LibroSocios\RelationManagers\DocumentosRelationManager;
 
 class LibroSociosResource extends Resource
 {
@@ -242,6 +243,13 @@ class LibroSociosResource extends Resource
                 DeleteBulkAction::make(),
                 RestoreBulkAction::make(),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            DocumentosRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
