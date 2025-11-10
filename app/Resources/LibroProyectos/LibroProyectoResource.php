@@ -34,6 +34,7 @@ class LibroProyectoResource extends Resource
 
     public static function getModelLabel(): string { return 'Proyecto'; }
     public static function getPluralModelLabel(): string { return 'Libro Proyectos'; }
+    protected static ?string $navigationLabel = 'Proyectos';
 
     public static function canAccess(): bool
     {

@@ -50,7 +50,7 @@ class GestorDocumentalResource extends Resource
 {
     protected static ?string $model = GestorDocumental::class;
 
-    protected static ?string $navigationLabel = 'Registro documental';
+    protected static ?string $navigationLabel = 'Documentación';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-archive-box';
 
     public static function getModelLabel(): string { return 'Documento'; }

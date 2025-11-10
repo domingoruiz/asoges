@@ -38,7 +38,7 @@ class LibroInventarioResource extends Resource
 {
     protected static ?string $model = LibroInventario::class;
 
-    protected static ?string $navigationLabel = 'Libro Inventario';
+    protected static ?string $navigationLabel = 'Inventario';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function getModelLabel(): string { return 'Movimiento Inventario'; }

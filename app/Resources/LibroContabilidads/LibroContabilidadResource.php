@@ -45,7 +45,7 @@ use App\Resources\LibroContabilidads\RelationManagers\DocumentosRelationManager;
 class LibroContabilidadResource extends Resource
 {
     protected static ?string $model = LibroContabilidad::class;
-    protected static ?string $navigationLabel = 'Libro Contabilidad';
+    protected static ?string $navigationLabel = 'Contabilidad';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-banknotes';
 
     public static function getModelLabel(): string { return 'Apunte Contable'; }

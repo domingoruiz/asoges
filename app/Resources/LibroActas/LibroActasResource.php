@@ -38,7 +38,7 @@ use App\Resources\LibroActas\RelationManagers\DocumentosRelationManager;
 class LibroActasResource extends Resource
 {
     protected static ?string $model = LibroActa::class;
-    protected static ?string $navigationLabel = 'Libro Actas';
+    protected static ?string $navigationLabel = 'Actas';
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     public static function getModelLabel(): string { return 'Acta'; }

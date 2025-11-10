@@ -35,7 +35,7 @@ class LibroSociosResource extends Resource
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static string | \UnitEnum | null $navigationGroup = null;
 
-    public static function getNavigationLabel(): string { return 'Libro Socios'; }
+    public static function getNavigationLabel(): string { return 'Socios'; }
     public static function getModelLabel(): string { return 'Socio'; }
     public static function getPluralModelLabel(): string { return 'Libro Socios'; }
 
