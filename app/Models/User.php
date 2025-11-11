@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery
 {
@@ -87,5 +88,10 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     {
         $this->app_authentication_recovery_codes = $codes;
         $this->save();
+    }
+
+    public function asociaciones(): HasMany
+    {
+        return $this->hasMany(AsoUsr::class, 'usr_id');
     }
 }

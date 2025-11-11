@@ -20,8 +20,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rules\Password;
 use Maatwebsite\Excel\Facades\Excel;
-
-// ← reglas de contraseña
+use App\Resources\Users\RelationManagers\AsoUsrRelationManager;
 
 class UserResource extends Resource
 {
@@ -127,6 +126,13 @@ class UserResource extends Resource
                 DeleteBulkAction::make(),
                 RestoreBulkAction::make(),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            AsoUsrRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
