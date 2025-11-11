@@ -28,6 +28,7 @@ use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
@@ -47,6 +48,12 @@ class LibroActasResource extends Resource
     public static function canAccess(): bool
     {
         return is_numeric(session('aso_actual')) && session('rol_activo') !== 'superadmin';
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('aso_id', session('aso_actual'));
     }
 
     public static function form(Schema $schema): Schema
