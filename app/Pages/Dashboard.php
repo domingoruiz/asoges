@@ -29,4 +29,11 @@ class Dashboard extends Page
                 ->url(route('filament.asoges.pages.select-aso')),
         ];
     }
+
+    protected function getFooterWidgets(): array
+    {
+        return [
+            \App\Widgets\LibrosKpi::class,
+        ];
+    }
 }
