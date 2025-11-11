@@ -11,26 +11,17 @@ class RolesExport implements FromCollection, WithHeadings
 {
     public function __construct(private Collection $ids) {}
 
-    public function collection()
+    public function collection(): Collection
     {
         return Rol::query()
             ->whereIn('id', $this->ids)
             ->get([
-                'id',
-                'nombre',
-                'alt_usr',
-                'mod_usr',
-                'created_at',
-                'updated_at',
+                'id', 'nombre',
             ])
             ->map(function ($rol) {
                 return [
-                    'id'         => $rol->id,
-                    'nombre'     => $rol->nombre,
-                    'alt_usr'    => $rol->alt_usr,
-                    'mod_usr'    => $rol->mod_usr,
-                    'created_at' => $rol->created_at,
-                    'updated_at' => $rol->updated_at,
+                    'id'     => $rol->id,
+                    'nombre' => $rol->nombre,
                 ];
             });
     }
@@ -38,12 +29,7 @@ class RolesExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID',
-            'Nombre',
-            'Creado por (alt_usr)',
-            'Modificado por (mod_usr)',
-            'Fecha de creación',
-            'Última modificación',
+            'ID','Nombre',
         ];
     }
 }

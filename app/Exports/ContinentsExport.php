@@ -9,22 +9,28 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class ContinentsExport implements FromCollection, WithHeadings
 {
-    private Collection $ids;
+    public function __construct(private Collection $ids) {}
 
-    public function __construct(Collection $ids)
-    {
-        $this->ids = $ids;
-    }
-
-    public function collection()
+    public function collection(): Collection
     {
         return Continent::query()
             ->whereIn('id', $this->ids)
-            ->get(['id', 'codigo', 'nombre']);
+            ->get([
+                'id', 'codigo', 'nombre',
+            ])
+            ->map(function ($r) {
+                return [
+                    'id'      => $r->id,
+                    'codigo'  => $r->codigo,
+                    'nombre'  => $r->nombre,
+                ];
+            });
     }
 
     public function headings(): array
     {
-        return ['ID', 'Código', 'Nombre'];
+        return [
+            'ID','Código','Nombre',
+        ];
     }
 }

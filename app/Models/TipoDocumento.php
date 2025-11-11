@@ -41,4 +41,9 @@ class TipoDocumento extends Model
         }
         return implode(' - ', $ruta);
     }
+
+    public function aso()
+    {
+        return $this->belongsTo(\App\Models\Aso::class, 'aso_id');
+    }
 }

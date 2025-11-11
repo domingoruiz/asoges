@@ -15,7 +15,7 @@ class LibroActasExport implements FromQuery, WithMapping, WithHeadings
     public function query()
     {
         return LibroActa::query()
-            ->with(['aso:id,nombre','tipoActa:id,nombre','estadoActa:id,nombre'])
+            ->with(['aso:id,nombre', 'tipoActa:id,nombre', 'estadoActa:id,nombre'])
             ->withCount('asistentes')
             ->whereIn('id', $this->ids);
     }
@@ -24,7 +24,6 @@ class LibroActasExport implements FromQuery, WithMapping, WithHeadings
     {
         return [
             $a->id,
-            $a->aso_id,
             $a->aso?->nombre,
             $a->titulo,
             optional($a->fecha)->format('Y-m-d'),
@@ -34,20 +33,16 @@ class LibroActasExport implements FromQuery, WithMapping, WithHeadings
             $a->tipoActa?->nombre,
             $a->estadoActa?->nombre,
             $a->aprobada ? 'Sí' : 'No',
-            optional($a->fecha_aprobacion)->format('Y-m-d H:i:s'),
+            optional($a->fecha_aprobacion)->format('Y-m-d'),
             $a->asistentes_count,
-            optional($a->created_at)->format('Y-m-d H:i:s'),
-            optional($a->updated_at)->format('Y-m-d H:i:s'),
-            optional($a->deleted_at)->format('Y-m-d H:i:s'),
         ];
     }
 
     public function headings(): array
     {
         return [
-            'ID','Asociación (ID)','Asociación','Título','Fecha','Hora inicio','Hora fin',
-            'Lugar','Tipo de acta','Estado','Aprobada','Fecha aprobación',
-            'Nº asistentes','Fecha creación','Última modificación','Eliminado en',
+            'ID','Asociación','Título','Fecha','Hora inicio','Hora fin','Lugar',
+            'Tipo de acta','Estado','Aprobada','Fecha aprobación','Nº asistentes',
         ];
     }
 }

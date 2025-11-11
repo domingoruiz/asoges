@@ -108,7 +108,7 @@ class EjercicioResource extends Resource
                     ->action(function (Collection $records) {
                         return Excel::download(
                             new EjerciciosExport($records->pluck('id')),
-                            'monedas.xlsx'
+                            'ejercicios.xlsx'
                         );
                     }),
                 DeleteBulkAction::make(),

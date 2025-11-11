@@ -11,57 +11,34 @@ class CuentasBancariasExport implements FromCollection, WithHeadings
 {
     public function __construct(private Collection $ids) {}
 
-    public function collection()
+    public function collection(): Collection
     {
         return CuentaBancaria::query()
-            ->with([
-                'entidadRel:id,nombre_fiscal',
-                'paisRel:id,nombre',
-                'monedaRel:id,codigo_iso,nombre',
-            ])
+            ->with(['aso:id,nombre', 'entidadRel:id,nombre_fiscal', 'paisRel:id,nombre', 'monedaRel:id,codigo_iso,nombre'])
             ->whereIn('id', $this->ids)
             ->get([
-                'id',
-                'aso_id',
-                'nombre',
-                'entidad_id',
-                'numero_cuenta',
-                'swift_bic',
-                'moneda_id',
-                'fecha_apertura',
-                'observaciones',
-                'direccion',
-                'cp',
-                'localidad',
-                'provincia',
-                'pais_id',
-                'telefono',
-                'email',
-                'created_at',
-                'updated_at',
-                'deleted_at',
+                'id', 'aso_id', 'nombre', 'entidad_id', 'numero_cuenta', 'swift_bic',
+                'moneda_id', 'fecha_apertura', 'observaciones', 'direccion', 'cp',
+                'localidad', 'provincia', 'pais_id', 'telefono', 'email',
             ])
             ->map(function ($e) {
                 return [
-                    'id'                => $e->id,
-                    'aso_id'            => $e->aso_id,
-                    'nombre'            => $e->nombre,
-                    'entidad'           => $e->entidadRel?->nombre,
-                    'numero_cuenta'    => $e->numero_cuenta,
-                    'swift_bic'         => $e->swift_bic,
-                    'moneda'            => $e->monedaRel?->codigo_iso,
-                    'fecha_apertura'    => $e->fecha_apertura,
-                    'observaciones'     => $e->observaciones,
-                    'direccion'         => $e->direccion,
-                    'cp'                => $e->cp,
-                    'localidad'         => $e->localidad,
-                    'provincia'         => $e->provincia,
-                    'pais'              => $e->paisRel?->nombre,
-                    'telefono'          => $e->telefono,
-                    'email'             => $e->email,
-                    'created_at'        => $e->created_at,
-                    'updated_at'        => $e->updated_at,
-                    'deleted_at'        => $e->deleted_at,
+                    'id'             => $e->id,
+                    'asociacion'     => $e->aso?->nombre,
+                    'nombre'         => $e->nombre,
+                    'entidad'        => $e->entidadRel?->nombre_fiscal,
+                    'numero_cuenta'  => $e->numero_cuenta,
+                    'swift_bic'      => $e->swift_bic,
+                    'moneda'         => $e->monedaRel?->codigo_iso,
+                    'fecha_apertura' => optional($e->fecha_apertura)->format('Y-m-d'),
+                    'observaciones'  => $e->observaciones,
+                    'direccion'      => $e->direccion,
+                    'cp'             => $e->cp,
+                    'localidad'      => $e->localidad,
+                    'provincia'      => $e->provincia,
+                    'pais'           => $e->paisRel?->nombre,
+                    'telefono'       => $e->telefono,
+                    'email'          => $e->email,
                 ];
             });
     }
@@ -69,25 +46,8 @@ class CuentasBancariasExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID',
-            'Asociación (ID)',
-            'Nombre',
-            'Entidad',
-            'Número de Cuenta',
-            'SWIFT/BIC',
-            'Moneda',
-            'Fecha de Apertura',
-            'Observaciones',
-            'Dirección',
-            'CP',
-            'Localidad',
-            'Provincia',
-            'País',
-            'Teléfono',
-            'Email',
-            'Fecha de Creación',
-            'Última Modificación',
-            'Eliminado en',
+            'ID','Asociación','Nombre','Entidad','Número de cuenta','SWIFT/BIC','Moneda','Fecha de apertura',
+            'Observaciones','Dirección','CP','Localidad','Provincia','País','Teléfono','Email',
         ];
     }
 }

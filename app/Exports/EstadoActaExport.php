@@ -11,46 +11,27 @@ class EstadoActaExport implements FromCollection, WithHeadings
 {
     public function __construct(private Collection $ids) {}
 
-    public function collection()
+    public function collection(): Collection
     {
         return EstadoActa::query()
-            ->with(['aso:id,nombre', 'createdBy:id,name', 'updatedBy:id,name'])
+            ->with(['aso:id,nombre'])
             ->whereIn('id', $this->ids)
             ->get([
-                'id',
-                'aso_id',
-                'nombre',
-                'alt_usr',
-                'mod_usr',
-                'created_at',
-                'updated_at',
-                'deleted_at',
+                'id', 'aso_id', 'nombre',
             ])
-            ->map(fn ($r) => [
-                'id'             => $r->id,
-                'aso_id'         => $r->aso_id,
-                'asociacion'     => $r->aso?->nombre,
-                'nombre'         => $r->nombre,
-                'creado_por'     => $r->createdBy?->name,
-                'modificado_por' => $r->updatedBy?->name,
-                'created_at'     => optional($r->created_at)->format('Y-m-d H:i:s'),
-                'updated_at'     => optional($r->updated_at)->format('Y-m-d H:i:s'),
-                'deleted_at'     => optional($r->deleted_at)->format('Y-m-d H:i:s'),
-            ]);
+            ->map(function ($r) {
+                return [
+                    'id'          => $r->id,
+                    'asociacion'  => $r->aso?->nombre,
+                    'nombre'      => $r->nombre,
+                ];
+            });
     }
 
     public function headings(): array
     {
         return [
-            'ID',
-            'Asociación (ID)',
-            'Asociación',
-            'Nombre',
-            'Creado por',
-            'Modificado por',
-            'Fecha creación',
-            'Última modificación',
-            'Eliminado en',
+            'ID','Asociación','Nombre',
         ];
     }
 }

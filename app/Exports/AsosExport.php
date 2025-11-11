@@ -11,31 +11,18 @@ class AsosExport implements FromCollection, WithHeadings
 {
     public function __construct(private Collection $ids) {}
 
-    public function collection()
+    public function collection(): Collection
     {
         return Aso::query()
-            ->with(['createdBy:id,name', 'updatedBy:id,name']) // si tienes relaciones
             ->whereIn('id', $this->ids)
             ->get([
-                'id',
-                'fch_constitucion',
-                'nombre',
-                'cif',
-                'domicilio_social',
-                'nro_registro',
-                'nro_registro_municipal',
-                'telefono',
-                'email',
-                'web',
-                'alt_usr',
-                'mod_usr',
-                'created_at',
-                'updated_at',
+                'id', 'fch_constitucion', 'nombre', 'cif', 'domicilio_social',
+                'nro_registro', 'nro_registro_municipal', 'telefono', 'email', 'web',
             ])
             ->map(function ($aso) {
                 return [
                     'id'                    => $aso->id,
-                    'fch_constitucion'      => $aso->fch_constitucion,
+                    'fch_constitucion'      => optional($aso->fch_constitucion)->format('Y-m-d'),
                     'nombre'                => $aso->nombre,
                     'cif'                   => $aso->cif,
                     'domicilio_social'      => $aso->domicilio_social,
@@ -44,12 +31,6 @@ class AsosExport implements FromCollection, WithHeadings
                     'telefono'              => $aso->telefono,
                     'email'                 => $aso->email,
                     'web'                   => $aso->web,
-                    'creado_por_id'         => $aso->alt_usr,
-                    'creado_por'            => $aso->createdBy?->name,
-                    'modificado_por_id'     => $aso->mod_usr,
-                    'modificado_por'        => $aso->updatedBy?->name,
-                    'created_at'            => $aso->created_at,
-                    'updated_at'            => $aso->updated_at,
                 ];
             });
     }
@@ -57,22 +38,8 @@ class AsosExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID',
-            'Fecha constitución',
-            'Nombre',
-            'CIF',
-            'Domicilio social',
-            'Nº registro',
-            'Nº registro municipal',
-            'Teléfono',
-            'Email',
-            'Web',
-            'Creado por (ID)',
-            'Creado por (Nombre)',
-            'Modificado por (ID)',
-            'Modificado por (Nombre)',
-            'Fecha de creación',
-            'Última modificación',
+            'ID','Fecha constitución','Nombre','CIF','Domicilio social','Nº registro',
+            'Nº registro municipal','Teléfono','Email','Web',
         ];
     }
 }

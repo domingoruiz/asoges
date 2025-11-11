@@ -11,32 +11,28 @@ class CategoriaInventarioExport implements FromCollection, WithHeadings
 {
     public function __construct(private Collection $ids) {}
 
-    public function collection()
+    public function collection(): Collection
     {
         return CategoriaInventario::query()
-            ->with(['aso:id,nombre','padre:id,nombre,categoria_padre_id','createdBy:id,name','updatedBy:id,name'])
+            ->with(['aso:id,nombre', 'padre:id,nombre,categoria_padre_id'])
             ->whereIn('id', $this->ids)
-            ->get()
-            ->map(fn ($r) => [
-                'ID'                   => $r->id,
-                'Asociación (ID)'      => $r->aso_id,
-                'Asociación'           => $r->aso?->nombre,
-                'Nombre'               => $r->nombre,
-                'Categoría padre'      => $r->padre?->nombre,
-                'Ruta'                 => $r->ruta,
-                'Creado por'           => $r->createdBy?->name,
-                'Modificado por'       => $r->updatedBy?->name,
-                'Fecha creación'       => optional($r->created_at)->format('Y-m-d H:i:s'),
-                'Última modificación'  => optional($r->updated_at)->format('Y-m-d H:i:s'),
-                'Eliminado en'         => optional($r->deleted_at)->format('Y-m-d H:i:s'),
-            ]);
+            ->get([
+                'id', 'aso_id', 'nombre', 'categoria_padre_id'
+            ])
+            ->map(function ($r) {
+                return [
+                    'id'              => $r->id,
+                    'asociacion'      => $r->aso?->nombre,
+                    'nombre'          => $r->nombre,
+                    'categoria_padre' => $r->padre?->nombre
+                ];
+            });
     }
 
     public function headings(): array
     {
         return [
-            'ID','Asociación (ID)','Asociación','Nombre','Categoría padre','Ruta',
-            'Creado por','Modificado por','Fecha creación','Última modificación','Eliminado en',
+            'ID','Asociación','Nombre','Categoría padre',
         ];
     }
 }

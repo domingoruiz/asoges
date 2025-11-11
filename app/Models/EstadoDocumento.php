@@ -25,4 +25,9 @@ class EstadoDocumento extends Model
 
     public function createdBy() { return $this->belongsTo(User::class, 'alt_usr'); }
     public function updatedBy() { return $this->belongsTo(User::class, 'mod_usr'); }
+
+    public function aso()
+    {
+        return $this->belongsTo(\App\Models\Aso::class, 'aso_id');
+    }
 }

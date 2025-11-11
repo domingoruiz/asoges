@@ -9,42 +9,30 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class CurrenciesExport implements FromCollection, WithHeadings
 {
-    private Collection $ids;
+    public function __construct(private Collection $ids) {}
 
-    public function __construct(Collection $ids)
-    {
-        $this->ids = $ids;
-    }
-
-    public function collection()
+    public function collection(): Collection
     {
         return Currency::query()
             ->whereIn('id', $this->ids)
             ->get([
-                'id',
-                'codigo_iso',
-                'nombre',
-                'nombre_en',
-                'simbolo',
-                'alt_usr',
-                'mod_usr',
-                'created_at',
-                'updated_at',
-            ]);
+                'id', 'codigo_iso', 'nombre', 'nombre_en', 'simbolo',
+            ])
+            ->map(function ($r) {
+                return [
+                    'id'         => $r->id,
+                    'codigo_iso' => $r->codigo_iso,
+                    'nombre'     => $r->nombre,
+                    'nombre_en'  => $r->nombre_en,
+                    'simbolo'    => $r->simbolo,
+                ];
+            });
     }
 
     public function headings(): array
     {
         return [
-            'ID',
-            'Código ISO',
-            'Nombre',
-            'Nombre en inglés',
-            'Símbolo',
-            'Creado por (alt_usr)',
-            'Modificado por (mod_usr)',
-            'Fecha de creación',
-            'Última modificación',
+            'ID','Código ISO','Nombre','Nombre en inglés','Símbolo',
         ];
     }
 }
