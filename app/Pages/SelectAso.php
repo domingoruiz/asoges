@@ -6,7 +6,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Components\Select;
 use App\Models\AsoUsr;
-use Filament\Forms;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +15,6 @@ class SelectAso extends Page implements HasForms
 
     protected string $view = 'pages.select-aso';
     protected static ?string $slug = 'select-aso';
-    protected static string | \BackedEnum | null $navigationIcon = null;
-    protected static string | \UnitEnum | null $navigationGroup = null;
     protected static bool $shouldRegisterNavigation = false;
     protected static ?string $title = 'Seleccionar Asociación';
 

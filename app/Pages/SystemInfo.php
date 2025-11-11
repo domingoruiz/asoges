@@ -2,7 +2,6 @@
 
 namespace App\Pages;
 
-use Filament\Filament;
 use Throwable;
 use Filament\Pages\Page;
 use Composer\InstalledVersions;
@@ -26,18 +25,10 @@ class SystemInfo extends Page
     public function getFilamentVersion(): ?string
     {
         try {
-            if (class_exists(Filament::class) && defined(Filament::class . '::VERSION')) {
-                return Filament::VERSION;
-            }
-        } catch (Throwable $e) {}
-
-        try {
             if (class_exists(InstalledVersions::class) && InstalledVersions::isInstalled('filament/filament')) {
                 return InstalledVersions::getPrettyVersion('filament/filament');
             }
-        } catch (Throwable $e) {
-            // ignore
-        }
+        } catch (Throwable $e) {}
 
         return null;
     }
@@ -72,10 +63,7 @@ class SystemInfo extends Page
                 }
             }
 
-            // deduplicate by name
-            $results = collect($results)->unique('name')->values()->all();
-
-            return $results;
+            return collect($results)->unique('name')->values()->all();
         } catch (Throwable $e) {
             return [];
         }

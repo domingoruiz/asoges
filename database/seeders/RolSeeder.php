@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Rol;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;

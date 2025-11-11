@@ -29,7 +29,7 @@ Thumbs.db
 /public/filament-tmp
 /storage/filament-media
 
-#Others
+# Others
 composer.phar
 /public/hot
 stubs/
