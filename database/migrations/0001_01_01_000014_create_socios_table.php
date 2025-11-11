@@ -15,6 +15,7 @@ return new class extends Migration
 
             $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+
             $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('usr_id')->nullable()->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('rol_id')->constrained('rol')->cascadeOnUpdate()->restrictOnDelete();
@@ -37,6 +38,7 @@ return new class extends Migration
             $table->string('telefono_tutor', 255)->nullable();
 
             $table->unique(['aso_id', 'numero_socio'], 'socios_aso_numero_unique');
+            $table->unique(['aso_id', 'dni'], 'socios_aso_dni_unique');
         });
     }
 

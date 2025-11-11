@@ -15,6 +15,7 @@ return new class extends Migration
 
             $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+
             $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('tipo_transaccion_id')->constrained('tipo_transaccion')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('ejercicio_id')->constrained('ejercicio')->cascadeOnUpdate()->restrictOnDelete();
@@ -27,6 +28,8 @@ return new class extends Migration
             $table->decimal('importe', 10, 2);
             $table->string('concepto', 50);
             $table->text('descripcion')->nullable();
+
+            $table->unique(['aso_id', 'concepto', 'fecha_contable'], 'contabilidad_aso_concepto_fecha_unique');
         });
     }
 

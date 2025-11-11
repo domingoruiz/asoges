@@ -18,16 +18,13 @@ return new class extends Migration
 
         Schema::create('cache_locks', function (Blueprint $table) {
             $table->timestamps();
-            
+
             $table->string('key')->primary();
             $table->string('owner');
             $table->integer('expiration');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('cache');

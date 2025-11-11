@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
 
             $table->string('nombre', 255);
+
+            $table->unique(['aso_id', 'nombre'], 'estado_documento_aso_nombre_unique');
         });
     }
 

@@ -12,16 +12,11 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->foreignId('alt_usr')
-                ->constrained('users')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+            $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
 
-            $table->foreignId('mod_usr')
-                ->nullable()
-                ->constrained('users')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+            $table->foreignId('continente')->nullable()->constrained('continents')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('moneda')->constrained('currencies')->cascadeOnUpdate()->restrictOnDelete();
 
             $table->string('nombre');
             $table->string('nombre_en')->nullable();
@@ -30,16 +25,9 @@ return new class extends Migration
             $table->smallInteger('codigo_num');
             $table->string('prefijo');
 
-            $table->foreignId('continente')
-                ->nullable()
-                ->constrained('continents')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
-
-            $table->foreignId('moneda')
-                ->constrained('currencies')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+            $table->unique(['nombre'], 'pai_nombre_unique');
+            $table->unique(['codigo_iso2'], 'pai_codigo_iso2_unique');
+            $table->unique(['codigo_iso3'], 'pai_codigo_iso3_unique');
         });
     }
 

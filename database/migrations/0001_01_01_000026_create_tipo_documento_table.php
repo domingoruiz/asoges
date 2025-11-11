@@ -16,9 +16,11 @@ return new class extends Migration
             $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
             $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('categoria_padre_id')->nullable()->constrained('tipo_documento')->cascadeOnUpdate()->nullOnDelete();
 
             $table->string('nombre', 255);
-            $table->foreignId('categoria_padre_id')->nullable()->constrained('tipo_documento')->cascadeOnUpdate()->nullOnDelete();
+
+            $table->unique(['aso_id', 'nombre'], 'tipo_documento_aso_nombre_unique');
         });
     }
 

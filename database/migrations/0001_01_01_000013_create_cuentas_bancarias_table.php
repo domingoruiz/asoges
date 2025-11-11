@@ -15,8 +15,8 @@ return new class extends Migration
 
             $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
-            $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
 
+            $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('entidad_id')->nullable()->constrained('entidad')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('moneda_id')->nullable()->constrained('currencies')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('pais_id')->nullable()->constrained('pai')->cascadeOnUpdate()->restrictOnDelete();
@@ -33,7 +33,8 @@ return new class extends Migration
             $table->string('telefono')->nullable();
             $table->string('email')->nullable();
 
-            $table->unique(['aso_id', 'nombre']);
+            $table->unique(['aso_id', 'nombre'], 'cuentas_bancarias_aso_nombre_unique');
+            $table->unique(['aso_id', 'numero_cuenta'], 'cuentas_bancarias_aso_numero_unique');
         });
     }
 

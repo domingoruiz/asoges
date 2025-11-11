@@ -27,8 +27,9 @@ return new class extends Migration
             $table->string('ref_externa', 50)->nullable();
             $table->string('nombre', 255);
             $table->text('descripcion')->nullable();
-
             $table->string('archivo')->nullable();
+
+            $table->unique(['aso_id', 'numero_serie'], 'gestor_documental_aso_numero_unique');
         });
     }
 

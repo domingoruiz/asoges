@@ -15,6 +15,7 @@ return new class extends Migration
 
             $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+
             $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('tipo_acta_id')->constrained('tipo_acta')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('estado_acta_id')->constrained('estado_acta')->cascadeOnUpdate()->restrictOnDelete();
@@ -27,6 +28,8 @@ return new class extends Migration
             $table->text('contenido_acta');
             $table->boolean('aprobada');
             $table->timestamp('fecha_aprobacion')->nullable();
+
+            $table->unique(['aso_id', 'titulo'], 'actas_aso_titulo_unique');
         });
     }
 

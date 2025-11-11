@@ -15,6 +15,7 @@ return new class extends Migration
 
             $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+
             $table->foreignId('aso_id')->constrained('aso')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('categoria_id')->constrained('categoria_inventario')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('entidad_id')->constrained('entidad')->cascadeOnUpdate()->restrictOnDelete();
@@ -25,6 +26,8 @@ return new class extends Migration
             $table->integer('cantidad');
             $table->decimal('valor', 10, 2);
             $table->date('fecha_adquisicion');
+
+            $table->unique(['aso_id', 'nombre'], 'inventario_aso_nombre_unique');
         });
     }
 

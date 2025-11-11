@@ -15,8 +15,11 @@ return new class extends Migration
 
             $table->foreignId('alt_usr')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('mod_usr')->nullable()->constrained('users')->cascadeOnUpdate()->nullOnDelete();
+
             $table->foreignId('acta_id')->constrained('actas')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('socio_id')->constrained('socios')->cascadeOnUpdate()->restrictOnDelete();
+
+            $table->unique(['acta_id', 'socio_id'], 'asistentes_acta_socio_unique');
         });
     }
 
