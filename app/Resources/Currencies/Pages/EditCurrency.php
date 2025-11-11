@@ -6,7 +6,6 @@ use Filament\Actions\DeleteAction;
 use App\Actions\AuditAction;
 use App\Actions\FormActions;
 use App\Resources\Currencies\CurrencyResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditCurrency extends EditRecord

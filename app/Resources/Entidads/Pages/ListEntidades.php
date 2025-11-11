@@ -4,7 +4,6 @@ namespace App\Resources\Entidads\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\Entidads\EntidadResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListEntidades extends ListRecords

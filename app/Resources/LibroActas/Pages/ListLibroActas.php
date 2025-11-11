@@ -4,7 +4,6 @@ namespace App\Resources\LibroActas\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\LibroActas\LibroActasResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListLibroActas extends ListRecords

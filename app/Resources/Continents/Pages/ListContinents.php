@@ -4,7 +4,6 @@ namespace App\Resources\Continents\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\Continents\ContinentResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListContinents extends ListRecords

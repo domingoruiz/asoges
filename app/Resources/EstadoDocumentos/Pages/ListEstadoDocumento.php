@@ -4,7 +4,6 @@ namespace App\Resources\EstadoDocumentos\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\EstadoDocumentos\EstadoDocumentoResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListEstadoDocumento extends ListRecords

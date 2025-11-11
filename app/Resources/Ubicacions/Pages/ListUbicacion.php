@@ -4,7 +4,6 @@ namespace App\Resources\Ubicacions\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\Ubicacions\UbicacionResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 

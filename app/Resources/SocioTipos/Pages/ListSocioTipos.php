@@ -4,7 +4,6 @@ namespace App\Resources\SocioTipos\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\SocioTipos\SocioTipoResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSocioTipos extends ListRecords

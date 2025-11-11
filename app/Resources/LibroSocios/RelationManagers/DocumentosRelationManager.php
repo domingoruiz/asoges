@@ -4,7 +4,6 @@ namespace App\Resources\LibroSocios\RelationManagers;
 
 use App\Resources\GestorDocumentals\GestorDocumentalResource;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 

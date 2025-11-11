@@ -4,7 +4,6 @@ namespace App\Resources\CategoriaInventarios\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\CategoriaInventarios\CategoriaInventarioResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 

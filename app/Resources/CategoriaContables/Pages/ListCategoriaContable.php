@@ -4,7 +4,6 @@ namespace App\Resources\CategoriaContables\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\CategoriaContables\CategoriaContableResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 

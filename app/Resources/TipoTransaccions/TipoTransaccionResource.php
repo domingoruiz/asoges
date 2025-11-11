@@ -2,22 +2,20 @@
 
 namespace App\Resources\TipoTransaccions;
 
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Hidden;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
+use App\Exports\TipoTransaccionExport;
+use App\Models\TipoTransaccion;
+use App\Resources\TipoTransaccions\Pages\CreateTipoTransaccion;
+use App\Resources\TipoTransaccions\Pages\EditTipoTransaccion;
+use App\Resources\TipoTransaccions\Pages\ListTipoTransaccion;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
-use App\Resources\TipoTransaccions\Pages\ListTipoTransaccion;
-use App\Resources\TipoTransaccions\Pages\CreateTipoTransaccion;
-use App\Resources\TipoTransaccions\Pages\EditTipoTransaccion;
-use App\Exports\TipoTransaccionExport;
-use App\Models\TipoTransaccion;
-use Filament\Forms;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -28,10 +26,10 @@ class TipoTransaccionResource extends Resource
 {
     protected static ?string $model = TipoTransaccion::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Maestros';
-    protected static ?string $navigationLabel = 'Tipos de Transacción';
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\UnitEnum|null $navigationGroup = 'Maestros';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Tipos de Transacción';
     public static function getModelLabel(): string { return 'Tipo de Transacción'; }
     public static function getPluralModelLabel(): string { return 'Tipos de Transacción'; }
 
@@ -40,57 +38,26 @@ class TipoTransaccionResource extends Resource
         return is_numeric(session('aso_actual')) && session('rol_activo') !== 'superadmin';
     }
 
-    public static function shouldRegisterNavigation(): bool
-    {
-        return self::canAccess();
-    }
-
     public static function getEloquentQuery(): Builder
     {
-        $q = parent::getEloquentQuery();
-        $asoId = session('aso_actual');
-
-        return is_numeric($asoId) ? $q->where('aso_id', $asoId) : $q->whereRaw('1=0');
+        $q = parent::getEloquentQuery(); $asoId = session('aso_actual'); return is_numeric($asoId) ? $q->where('aso_id', $asoId) : $q->whereRaw('1=0');
     }
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('nombre')
-                ->label('Nombre')
-                ->required()
-                ->maxLength(255)
-                ->rules(function ($record) {
-                    return [
-                        Rule::unique('tipo_transaccion','nombre')
-                            ->ignore($record?->id)
-                            ->where(fn ($q) => $q
-                                ->where('aso_id', session('aso_actual'))
-                                ->whereNull('deleted_at')
-                            ),
-                    ];
-                }),
-
-            Hidden::make('aso_id')
-                ->default(fn () => session('aso_actual'))
-                ->dehydrated(),
+            TextInput::make('nombre')->label('Nombre')->required()->maxLength(255)->rules(function ($record) { return [ Rule::unique('tipo_transaccion','nombre')->ignore($record?->id)->where(fn($q)=>$q->where('aso_id', session('aso_actual'))->whereNull('deleted_at')), ]; }),
+            Hidden::make('aso_id')->default(fn() => session('aso_actual'))->dehydrated(),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
-            ])
+            ->columns([TextColumn::make('nombre')->label('Nombre')->searchable()->sortable()])
             ->filters([TrashedFilter::make()])
             ->toolbarActions([
-                BulkAction::make('exportar')
-                    ->label('Exportar seleccionados')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->action(fn (Collection $records) =>
-                    Excel::download(new TipoTransaccionExport($records->pluck('id')), 'tipo_transaccion.xlsx')
-                    ),
+                BulkAction::make('exportar')->label('Exportar seleccionados')->icon('heroicon-o-arrow-down-tray')->action(fn (Collection $records) => Excel::download(new TipoTransaccionExport($records->pluck('id')), 'tipo_transaccion.xlsx')),
                 DeleteBulkAction::make(),
                 RestoreBulkAction::make(),
             ]);

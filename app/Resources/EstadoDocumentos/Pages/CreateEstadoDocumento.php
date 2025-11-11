@@ -2,8 +2,6 @@
 
 namespace App\Resources\EstadoDocumentos\Pages;
 
-use App\Actions\AuditAction;
-use App\Actions\FormActions;
 use App\Resources\EstadoDocumentos\EstadoDocumentoResource;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -17,12 +15,4 @@ class CreateEstadoDocumento extends CreateRecord
         return $data;
     }
 
-    protected function getFormActions(): array
-    {
-        return [
-            FormActions::accept(),
-            FormActions::cancel($this->getResource()::getUrl('index')),
-            AuditAction::make(),
-        ];
-    }
 }

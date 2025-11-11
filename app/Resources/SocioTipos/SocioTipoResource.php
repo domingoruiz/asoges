@@ -2,18 +2,17 @@
 
 namespace App\Resources\SocioTipos;
 
-use Filament\Schemas\Schema;
+use App\Exports\SocioTiposExport;
+use App\Models\SocioTipo;
+use App\Resources\SocioTipos\Pages\CreateSocioTipo;
+use App\Resources\SocioTipos\Pages\EditSocioTipo;
+use App\Resources\SocioTipos\Pages\ListSocioTipos;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
-use App\Resources\SocioTipos\Pages\ListSocioTipos;
-use App\Resources\SocioTipos\Pages\CreateSocioTipo;
-use App\Resources\SocioTipos\Pages\EditSocioTipo;
-use App\Exports\SocioTiposExport;
-use App\Filament\Resources\SocioTipoResource\Pages;
-use App\Models\SocioTipo;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -24,19 +23,12 @@ class SocioTipoResource extends Resource
 {
     protected static ?string $model = SocioTipo::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Maestros';
+    protected static string|\UnitEnum|null $navigationGroup = 'Maestros';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
+
     protected static ?string $navigationLabel = 'Tipos de socio';
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-user-group';
-
-    public static function getModelLabel(): string
-    {
-        return 'Tipo de socio';
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return 'Tipos de socio';
-    }
+    public static function getModelLabel(): string { return 'Tipo de socio'; }
+    public static function getPluralModelLabel(): string { return 'Tipos de socio'; }
 
     public static function canAccess(): bool
     {
@@ -46,11 +38,7 @@ class SocioTipoResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('nombre')
-                ->label('Nombre')
-                ->required()
-                ->maxLength(255)
-                ->unique(ignoreRecord: true),
+            TextInput::make('nombre')->label('Nombre')->required()->maxLength(255)->unique(ignoreRecord: true),
         ]);
     }
 
@@ -65,19 +53,9 @@ class SocioTipoResource extends Resource
                 TextColumn::make('updated_at')->label('Modificado')->dateTime()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')->label('Papelera')->dateTime()->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                TrashedFilter::make(),
-            ])
+            ->filters([TrashedFilter::make()])
             ->toolbarActions([
-                BulkAction::make('exportar')
-                    ->label('Exportar seleccionados')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->action(function (Collection $records) {
-                        return Excel::download(
-                            new SocioTiposExport($records->pluck('id')),
-                            'tipos_socio.xlsx'
-                        );
-                    }),
+                BulkAction::make('exportar')->label('Exportar seleccionados')->icon('heroicon-o-arrow-down-tray')->action(fn(Collection $records) => Excel::download(new SocioTiposExport($records->pluck('id')), 'tipos_socio.xlsx')),
                 DeleteBulkAction::make(),
                 RestoreBulkAction::make(),
             ]);

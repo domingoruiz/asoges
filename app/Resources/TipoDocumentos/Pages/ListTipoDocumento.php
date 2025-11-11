@@ -4,7 +4,6 @@ namespace App\Resources\TipoDocumentos\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\TipoDocumentos\TipoDocumentoResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 

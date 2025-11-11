@@ -2,26 +2,24 @@
 
 namespace App\Resources\Ubicacions;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Hidden;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
-use App\Resources\Ubicacions\RelationManagers\HijosRelationManager;
-use App\Resources\Ubicacions\Pages\ListUbicacion;
-use App\Resources\Ubicacions\Pages\CreateUbicacion;
-use App\Resources\Ubicacions\Pages\EditUbicacion;
 use App\Exports\UbicacionExport;
 use App\Models\Ubicacion;
-use Filament\Forms;
+use App\Resources\Ubicacions\Pages\CreateUbicacion;
+use App\Resources\Ubicacions\Pages\EditUbicacion;
+use App\Resources\Ubicacions\Pages\ListUbicacion;
+use App\Resources\Ubicacions\RelationManagers\HijosRelationManager;
+use Filament\Actions\BulkAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -32,10 +30,10 @@ class UbicacionResource extends Resource
 {
     protected static ?string $model = Ubicacion::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Maestros';
-    protected static ?string $navigationLabel = 'Ubicaciones';
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-map-pin';
+    protected static string|\UnitEnum|null $navigationGroup = 'Maestros';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map-pin';
 
+    protected static ?string $navigationLabel = 'Ubicaciones';
     public static function getModelLabel(): string { return 'Ubicación'; }
     public static function getPluralModelLabel(): string { return 'Ubicaciones'; }
 
@@ -44,16 +42,9 @@ class UbicacionResource extends Resource
         return is_numeric(session('aso_actual')) && session('rol_activo') !== 'superadmin';
     }
 
-    public static function shouldRegisterNavigation(): bool
-    {
-        return self::canAccess();
-    }
-
     public static function getEloquentQuery(): Builder
     {
-        $q = parent::getEloquentQuery();
-        $asoId = session('aso_actual');
-        return is_numeric($asoId) ? $q->where('aso_id', $asoId) : $q->whereRaw('1=0');
+        $q = parent::getEloquentQuery(); $asoId = session('aso_actual'); return is_numeric($asoId) ? $q->where('aso_id', $asoId) : $q->whereRaw('1=0');
     }
 
     public static function form(Schema $schema): Schema
@@ -61,51 +52,22 @@ class UbicacionResource extends Resource
         return $schema->components([
             Section::make('Datos')
                 ->schema([
-                    TextInput::make('nombre')
-                        ->label('Nombre')
-                        ->required()
-                        ->maxLength(255)
-                        ->rules(function ($record, callable $get) {
-                            return [
-                                Rule::unique('ubicacion', 'nombre')
-                                    ->ignore($record?->id)
-                                    ->where(fn ($q) => $q
-                                        ->where('aso_id', session('aso_actual'))
-                                        ->where('categoria_padre_id', $get('categoria_padre_id') ?: null)
-                                        ->whereNull('deleted_at')
-                                    ),
-                            ];
-                        }),
-
-                    Textarea::make('descripcion')
-                        ->label('Descripción')
-                        ->rows(3),
+                    TextInput::make('nombre')->label('Nombre')->required()->maxLength(255)->rules(function ($record, callable $get) { return [ Rule::unique('ubicacion', 'nombre')->ignore($record?->id)->where(fn($q) => $q->where('aso_id', session('aso_actual'))->where('categoria_padre_id', $get('categoria_padre_id') ?: null)->whereNull('deleted_at')), ]; }),
+                    Textarea::make('descripcion')->label('Descripción')->rows(3),
                 ])
                 ->columns(2),
-
-            Hidden::make('aso_id')
-                ->default(fn () => session('aso_actual'))
-                ->dehydrated(),
+            Hidden::make('aso_id')->default(fn() => session('aso_actual'))->dehydrated(),
         ])->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
-            ])
-            ->filters([ TrashedFilter::make() ])
-            ->recordActions([
-                EditAction::make()->label('Editar'),
-            ])
+            ->columns([TextColumn::make('nombre')->label('Nombre')->searchable()->sortable()])
+            ->filters([TrashedFilter::make()])
+            ->recordActions([EditAction::make()->label('Editar')])
             ->toolbarActions([
-                BulkAction::make('exportar')
-                    ->label('Exportar seleccionados')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->action(fn (Collection $records) =>
-                    Excel::download(new UbicacionExport($records->pluck('id')), 'ubicaciones.xlsx')
-                    ),
+                BulkAction::make('exportar')->label('Exportar seleccionados')->icon('heroicon-o-arrow-down-tray')->action(fn(Collection $records) => Excel::download(new UbicacionExport($records->pluck('id')), 'ubicaciones.xlsx')),
                 DeleteBulkAction::make(),
                 RestoreBulkAction::make(),
             ]);
@@ -113,9 +75,7 @@ class UbicacionResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            HijosRelationManager::class,
-        ];
+        return [HijosRelationManager::class];
     }
 
     public static function getPages(): array

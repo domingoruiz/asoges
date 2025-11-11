@@ -4,7 +4,6 @@ namespace App\Resources\LibroSocios\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\LibroSocios\LibroSociosResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListLibroSocios extends ListRecords

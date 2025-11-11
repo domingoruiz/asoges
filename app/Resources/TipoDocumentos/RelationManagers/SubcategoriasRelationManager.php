@@ -12,9 +12,7 @@ use Filament\Actions\Action;
 use App\Resources\TipoDocumentos\TipoDocumentoResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\RestoreAction;
-use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 

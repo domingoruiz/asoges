@@ -7,7 +7,6 @@ use Filament\Actions\RestoreAction;
 use App\Actions\AuditAction;
 use App\Actions\FormActions;
 use App\Resources\Users\UserResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditUser extends EditRecord

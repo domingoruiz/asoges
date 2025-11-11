@@ -4,7 +4,6 @@ namespace App\Resources\Users\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\Users\UserResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListUsers extends ListRecords

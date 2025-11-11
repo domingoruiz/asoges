@@ -2,25 +2,23 @@
 
 namespace App\Resources\CategoriaInventarios;
 
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Hidden;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TrashedFilter;
-use Filament\Actions\EditAction;
-use Filament\Actions\BulkAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
-use App\Resources\CategoriaInventarios\RelationManagers\HijosRelationManager;
-use App\Resources\CategoriaInventarios\Pages\ListCategoriaInventario;
-use App\Resources\CategoriaInventarios\Pages\CreateCategoriaInventario;
-use App\Resources\CategoriaInventarios\Pages\EditCategoriaInventario;
 use App\Exports\CategoriaInventarioExport;
 use App\Models\CategoriaInventario;
-use Filament\Forms;
+use App\Resources\CategoriaInventarios\Pages\CreateCategoriaInventario;
+use App\Resources\CategoriaInventarios\Pages\EditCategoriaInventario;
+use App\Resources\CategoriaInventarios\Pages\ListCategoriaInventario;
+use App\Resources\CategoriaInventarios\RelationManagers\HijosRelationManager;
+use Filament\Actions\BulkAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -31,21 +29,16 @@ class CategoriaInventarioResource extends Resource
 {
     protected static ?string $model = CategoriaInventario::class;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Maestros';
-    protected static ?string $navigationLabel = 'Categorías Inventario';
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-archive-box';
+    protected static string|\UnitEnum|null $navigationGroup = 'Maestros';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-archive-box';
 
+    protected static ?string $navigationLabel = 'Categorías Inventario';
     public static function getModelLabel(): string { return 'Categoría Inventario'; }
     public static function getPluralModelLabel(): string { return 'Categorías Inventario'; }
 
     public static function canAccess(): bool
     {
         return is_numeric(session('aso_actual')) && session('rol_activo') !== 'superadmin';
-    }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        return self::canAccess();
     }
 
     public static function getEloquentQuery(): Builder
@@ -60,47 +53,24 @@ class CategoriaInventarioResource extends Resource
         return $schema->components([
             Section::make('Datos')
                 ->schema([
-                    TextInput::make('nombre')
-                        ->label('Nombre')
-                        ->required()
-                        ->maxLength(255)
-                        ->rules(function ($record, callable $get) {
-                            return [
-                                Rule::unique('categoria_inventario', 'nombre')
-                                    ->ignore($record?->id)
-                                    ->where(fn ($q) => $q
-                                        ->where('aso_id', session('aso_actual'))
-                                        ->where('categoria_padre_id', $get('categoria_padre_id') ?: null)
-                                        ->whereNull('deleted_at')
-                                    ),
-                            ];
-                        }),
+                    TextInput::make('nombre')->label('Nombre')->required()->maxLength(255),
                 ])
                 ->columns(2),
-
-            Hidden::make('aso_id')
-                ->default(fn () => session('aso_actual'))
-                ->dehydrated(),
+            Hidden::make('aso_id')->default(fn() => session('aso_actual'))->dehydrated(),
         ])->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                TextColumn::make('nombre')->label('Nombre')->searchable()->sortable(),
-            ])
-            ->filters([ TrashedFilter::make() ])
-            ->recordActions([
-                EditAction::make()->label('Editar'),
-            ])
+            ->columns([TextColumn::make('nombre')->label('Nombre')->searchable()->sortable()])
+            ->filters([TrashedFilter::make()])
+            ->recordActions([EditAction::make()->label('Editar')])
             ->toolbarActions([
                 BulkAction::make('exportar')
                     ->label('Exportar seleccionados')
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->action(fn (Collection $records) =>
-                    Excel::download(new CategoriaInventarioExport($records->pluck('id')), 'categoria_inventario.xlsx')
-                    ),
+                    ->action(fn(Collection $records) => Excel::download(new CategoriaInventarioExport($records->pluck('id')), 'categoria_inventario.xlsx')),
                 DeleteBulkAction::make(),
                 RestoreBulkAction::make(),
             ]);
@@ -108,17 +78,15 @@ class CategoriaInventarioResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            HijosRelationManager::class,
-        ];
+        return [HijosRelationManager::class];
     }
 
     public static function getPages(): array
     {
         return [
-            'index'  => ListCategoriaInventario::route('/'),
+            'index' => ListCategoriaInventario::route('/'),
             'create' => CreateCategoriaInventario::route('/create'),
-            'edit'   => EditCategoriaInventario::route('/{record}/edit'),
+            'edit' => EditCategoriaInventario::route('/{record}/edit'),
         ];
     }
 }

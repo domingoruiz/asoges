@@ -4,7 +4,6 @@ namespace App\Resources\Currencies\Pages;
 
 use Filament\Actions\CreateAction;
 use App\Resources\Currencies\CurrencyResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListCurrencies extends ListRecords

@@ -2,8 +2,6 @@
 
 namespace App\Resources\GestorDocumentals\Pages;
 
-use App\Actions\AuditAction;
-use App\Actions\FormActions;
 use App\Resources\GestorDocumentals\GestorDocumentalResource;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Storage;
@@ -33,12 +31,4 @@ class CreateGestorDocumental extends CreateRecord
         }
     }
 
-    protected function getFormActions(): array
-    {
-        return [
-            FormActions::accept(),
-            FormActions::cancel($this->getResource()::getUrl('index')),
-            AuditAction::make(),
-        ];
-    }
 }
