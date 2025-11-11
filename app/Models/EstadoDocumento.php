@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\UserStamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EstadoDocumento extends Model
 {
@@ -13,21 +14,26 @@ class EstadoDocumento extends Model
     protected $table = 'estado_documento';
 
     protected $fillable = [
-        'alt_usr',
-        'mod_usr',
-        'aso_id',
-        'nombre',
+        'alt_usr', 'mod_usr',
+        'aso_id', 'nombre',
     ];
 
     protected $casts = [
         'deleted_at' => 'datetime',
     ];
 
-    public function createdBy() { return $this->belongsTo(User::class, 'alt_usr'); }
-    public function updatedBy() { return $this->belongsTo(User::class, 'mod_usr'); }
-
-    public function aso()
+    public function aso(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Aso::class, 'aso_id');
+        return $this->belongsTo(Aso::class, 'aso_id');
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'alt_usr');
+    }
+
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'mod_usr');
     }
 }

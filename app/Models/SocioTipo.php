@@ -5,11 +5,11 @@ namespace App\Models;
 use App\Traits\UserStamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SocioTipo extends Model
 {
-    use UserStamps;
-    use SoftDeletes;
+    use SoftDeletes, UserStamps;
 
     protected $table = 'socio_tipo';
 
@@ -21,12 +21,12 @@ class SocioTipo extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function createdBy()
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'alt_usr');
     }
 
-    public function updatedBy()
+    public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'mod_usr');
     }

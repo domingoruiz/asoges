@@ -18,38 +18,24 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
 
-    /**
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'is_superadmin',
+        'name', 'email', 'password', 'is_superadmin',
     ];
 
-    /**
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
-        'app_authentication_secret',
-        'app_authentication_recovery_codes',
+        'password', 'remember_token',
+        'app_authentication_secret', 'app_authentication_recovery_codes',
     ];
 
-    /**
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_superadmin' => 'boolean',
-            'app_authentication_secret' => 'encrypted',
-            'app_authentication_recovery_codes' => 'encrypted:array',
-            'has_email_authentication' => 'boolean',
+            'email_verified_at'                => 'datetime',
+            'password'                         => 'hashed',
+            'is_superadmin'                    => 'boolean',
+            'app_authentication_secret'        => 'encrypted',
+            'app_authentication_recovery_codes'=> 'encrypted:array',
+            'has_email_authentication'         => 'boolean',
         ];
     }
 
@@ -58,7 +44,12 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return true;
     }
 
-    public function asoUsuarios()
+    public function asoUsuarios(): HasMany
+    {
+        return $this->hasMany(AsoUsr::class, 'usr_id');
+    }
+
+    public function asociaciones(): HasMany
     {
         return $this->hasMany(AsoUsr::class, 'usr_id');
     }
@@ -88,10 +79,5 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     {
         $this->app_authentication_recovery_codes = $codes;
         $this->save();
-    }
-
-    public function asociaciones(): HasMany
-    {
-        return $this->hasMany(AsoUsr::class, 'usr_id');
     }
 }

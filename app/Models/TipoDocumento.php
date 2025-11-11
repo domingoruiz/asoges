@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Traits\UserStamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TipoDocumento extends Model
 {
@@ -13,37 +15,53 @@ class TipoDocumento extends Model
     protected $table = 'tipo_documento';
 
     protected $fillable = [
-        'alt_usr',
-        'mod_usr',
-        'aso_id',
-        'nombre',
-        'categoria_padre_id',
+        'alt_usr', 'mod_usr',
+        'aso_id', 'nombre', 'categoria_padre_id',
     ];
 
     protected $casts = [
         'deleted_at' => 'datetime',
     ];
 
-    public function categoriaPadre() { return $this->belongsTo(TipoDocumento::class, 'categoria_padre_id'); }
-    public function subcategorias() { return $this->hasMany(TipoDocumento::class, 'categoria_padre_id'); }
-    public function createdBy() { return $this->belongsTo(User::class, 'alt_usr'); }
-    public function updatedBy() { return $this->belongsTo(User::class, 'mod_usr'); }
+    public function aso(): BelongsTo
+    {
+        return $this->belongsTo(Aso::class, 'aso_id');
+    }
+
+    public function categoriaPadre(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'categoria_padre_id');
+    }
+
+    public function subcategorias(): HasMany
+    {
+        return $this->hasMany(self::class, 'categoria_padre_id');
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'alt_usr');
+    }
+
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'mod_usr');
+    }
 
     public function getRutaAttribute(): string
     {
         $ruta = [];
-        $actual = $this;
-        $g = 0;
-        while ($actual) {
-            array_unshift($ruta, $actual->nombre);
-            $actual = $actual->categoriaPadre;
-            if (++$g > 50) break;
-        }
-        return implode(' - ', $ruta);
-    }
+        $nodo = $this;
+        $guard = 0;
 
-    public function aso()
-    {
-        return $this->belongsTo(\App\Models\Aso::class, 'aso_id');
+        while ($nodo) {
+            array_unshift($ruta, $nodo->nombre);
+            $nodo = $nodo->categoriaPadre;
+            if (++$guard > 50) {
+                break;
+            }
+        }
+
+        return implode(' - ', $ruta);
     }
 }

@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Traits\UserStamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LibroProyecto extends Model
 {
@@ -13,39 +15,34 @@ class LibroProyecto extends Model
     protected $table = 'libro_proyectos';
 
     protected $fillable = [
-        'aso_id',
-        'nombre',
-        'estado',
-        'fecha_inicio',
-        'fecha_fin',
-        'observaciones',
-        'alt_usr',
-        'mod_usr',
+        'aso_id', 'nombre', 'estado',
+        'fecha_inicio', 'fecha_fin', 'observaciones',
+        'alt_usr', 'mod_usr',
     ];
 
     protected $casts = [
-        'deleted_at'   => 'datetime',
         'fecha_inicio' => 'date',
         'fecha_fin'    => 'date',
+        'deleted_at'   => 'datetime',
     ];
 
-    public function aso()
+    public function aso(): BelongsTo
     {
         return $this->belongsTo(Aso::class, 'aso_id');
     }
 
-    public function createdBy()
+    public function documentos(): HasMany
+    {
+        return $this->hasMany(GestorDocumental::class, 'libro_proyecto_id');
+    }
+
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'alt_usr');
     }
 
-    public function updatedBy()
+    public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'mod_usr');
-    }
-
-    public function documentos()
-    {
-        return $this->hasMany(\App\Models\GestorDocumental::class, 'libro_proyecto_id');
     }
 }
