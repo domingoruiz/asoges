@@ -162,7 +162,8 @@ class GestorDocumentalResource extends Resource
                         ->preserveFilenames()
                         ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/*', 'text/plain'])
                         ->multiple(false)
-                        ->maxFiles(1),
+                        ->maxFiles(1)
+                        ->deletable(false),
                     Actions::make([
                         Action::make('abrir')->label('Abrir')->icon('heroicon-o-eye')->url(fn($record) => ($record && $record->archivo_url) ? $record->archivo_url : '#')->openUrlInNewTab()->disabled(fn($record) => !($record && $record->archivo_url))->hidden(fn($record) => !($record && $record->archivo)),
                         Action::make('descargar')->label('Descargar')->icon('heroicon-o-arrow-down-tray')->url(fn($record) => ($record && $record->archivo_descarga_url) ? $record->archivo_descarga_url : '#')->disabled(fn($record) => !($record && $record->archivo_descarga_url))->hidden(fn($record) => !($record && $record->archivo)),

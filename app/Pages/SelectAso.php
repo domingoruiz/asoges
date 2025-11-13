@@ -34,12 +34,12 @@ class SelectAso extends Page implements HasForms
     {
         $user = Auth::user();
 
-        $opts = $user
-            ->asoUsuarios()
+        $opts = $user->asoUsuarios()
             ->with(['aso', 'rol'])
             ->get()
+            ->sortBy(fn ($asoUsr) => $asoUsr->aso->nombre)
             ->mapWithKeys(fn (AsoUsr $asoUsr) => [
-                $asoUsr->aso_id => "{$asoUsr->aso->nombre} ({$asoUsr->rol->nombre})",
+                $asoUsr->id => "{$asoUsr->aso->nombre} ({$asoUsr->rol->nombre})",
             ])
             ->toArray();
 
