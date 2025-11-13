@@ -20,7 +20,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     use HasFactory, Notifiable, SoftDeletes, UserStamps;
 
     protected $fillable = [
-        'name', 'email', 'password', 'is_superadmin',
+        'name', 'email', 'password', 'is_superadmin', 'alt_usr', 'mod_usr',
     ];
 
     protected $hidden = [
