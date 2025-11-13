@@ -13,7 +13,6 @@ class RolTest extends TestCase
         $rol = Rol::create([
             'nombre' => 'Administrador',
             'alt_usr' => 1,
-            'mod_usr' => 1,
         ]);
         $this->assertDatabaseHas('rol', [
             'nombre' => 'Administrador',

@@ -16,7 +16,6 @@ class UserTest extends TestCase
             'email' => 'ordenadordomi@gmail.com',
             'password' => Hash::make('password123'),
             'alt_usr' => 1,
-            'mod_usr' => 1,
         ]);
         $this->assertDatabaseHas('users', [
             'name' => 'Domingo Ruiz Arroyo',

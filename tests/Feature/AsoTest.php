@@ -17,7 +17,6 @@ class AsoTest extends TestCase
             'domicilio_social' => 'Vélez-Málaga',
             'fch_constitucion' => Carbon::now(),
             'alt_usr' => 1,
-            'mod_usr' => 1,
         ]);
         $this->assertDatabaseHas('aso', [
             'nombre' => 'Asociación Unbroken Workout',
