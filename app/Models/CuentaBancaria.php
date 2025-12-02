@@ -16,7 +16,7 @@ class CuentaBancaria extends Model
     protected $fillable = [
         'aso_id', 'nombre', 'entidad_id', 'numero_cuenta', 'swift_bic',
         'moneda_id', 'fecha_apertura', 'observaciones', 'direccion',
-        'cp', 'localidad', 'provincia', 'pais_id', 'telefono', 'email',
+        'cp', 'localidad', 'provincia', 'pais_id', 'telefono', 'email', 'alt_usr'
     ];
 
     protected $casts = [
