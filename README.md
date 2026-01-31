@@ -34,7 +34,7 @@ El sistema cubre el siguiente alcance funcional:
 El proyecto está construido sobre un stack moderno y robusto:
 
 -   **Backend Framework:** [Laravel 12.19.3](https://laravel.com)
--   **Panel Administrativo:** [Filament](https://filamentphp.com).
+-   **Panel Administrativo:** [Filament](https://filamentphp.com)
 -   **Lenguaje:** PHP 8.4.8
 -   **Base de Datos:** MySQL 8.0.42
 
@@ -91,5 +91,7 @@ Aplicación desarrollada por Domingo Ruiz Arroyo
 <[ordenadordomi@gmail.com](mailto:ordenadordomi@gmail.com)>
 
 ## 📄 Licencia
+
+[![License: CC BY-SA 3.0 ES](https://licensebuttons.net/l/by-sa/3.0/es/88x31.png)](https://creativecommons.org/licenses/by-sa/3.0/es/)
 
 Este proyecto está sujeto a una licencia **Reconocimiento-CompartirIgual 3.0 España de Creative Commons (CC BY-SA 3.0 ES)**. Consulte el archivo [LICENSE](../main/LICENSE) para obtener más detalles.
