@@ -10,26 +10,26 @@
 
 La aplicación permite la gestión coordinada de cinco libros esenciales (Socios, Actas, Documentación, Contabilidad e Inventario) bajo una arquitectura **multiasociación**, permitiendo que una única instancia gobierne varias entidades con aislamiento de datos.
 
-## 🎓 Origen del Proyecto
+## Origen del Proyecto
 
 Este desarrollo tiene su origen en el **Trabajo de Final de Grado (TFG)** del Grado de Ingeniería Informática.
 
 La memoria completa del proyecto, que incluye el análisis, diseño y detalles de implementación, se encuentra alojada en el repositorio institucional O2 de la UOC:
-👉 **[Consultar Memoria del Proyecto](https://hdl.handle.net/10609/154025)**
+**[Consultar Memoria del Proyecto](https://hdl.handle.net/10609/154025)**
 
-## 🚀 Características Principales
+## Características Principales
 
 El sistema cubre el siguiente alcance funcional:
 
--   **👥 Libro de Socios:** Gestión de altas, bajas y modificaciones con histórico de participación.
--   **📝 Libro de Actas:** Almacenamiento de actas en PDF con repositorio histórico y búsquedas avanzadas.
--   **📂 Registro Documental:** Control de entrada y salida de documentación oficial con trazabilidad.
--   **💰 Libro de Contabilidad:** Registro de ingresos y gastos, con generación de informes y exportación.
--   **📦 Libro de Inventario:** Control del patrimonio material de la asociación.
--   **🔐 Multitenancy:** Gestión de múltiples asociaciones con roles y permisos diferenciados (Superadministrador, Presidente, Secretario, Tesorero).
--   **📊 Exportación:** Capacidad de exportar datos a Excel para auditorías o informes externos.
+-   **Libro de Socios:** Gestión de altas, bajas y modificaciones con histórico de participación.
+-   **Libro de Actas:** Almacenamiento de actas en PDF con repositorio histórico y búsquedas avanzadas.
+-   **Registro Documental:** Control de entrada y salida de documentación oficial con trazabilidad.
+-   **Libro de Contabilidad:** Registro de ingresos y gastos, con generación de informes y exportación.
+-   **Libro de Inventario:** Control del patrimonio material de la asociación.
+-   **Multitenancy:** Gestión de múltiples asociaciones con roles y permisos diferenciados (Superadministrador, Presidente, Secretario, Tesorero).
+-   **Exportación:** Capacidad de exportar datos a Excel para auditorías o informes externos.
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 El proyecto está construido sobre un stack moderno y robusto:
 
@@ -38,7 +38,7 @@ El proyecto está construido sobre un stack moderno y robusto:
 -   **Lenguaje:** PHP 8.4.8
 -   **Base de Datos:** MySQL 8.0.42
 
-## 📥 Instalación y Despliegue
+## Instalación y Despliegue
 
 Sigue estos pasos para levantar el proyecto en tu entorno local:
 
@@ -65,33 +65,23 @@ Sigue estos pasos para levantar el proyecto en tu entorno local:
     php artisan migrate:fresh --seed
     ```
 
-## 💻 Comandos Útiles
+## Seguridad
 
-A continuación se listan comandos frecuentes para el mantenimiento de la aplicación:
+Este proyecto no ofrece garantías de seguridad ni soporte oficial ante incidentes, tal y como se detalla en la licencia de uso. Sin embargo, estamos comprometidos con la integridad del software:
 
-**Actualizar dependencias:**
-```bash
-composer update
-```
+* **Reporte de fallos:** Si encuentras una vulnerabilidad, por favor comunícala de forma privada.
+* **Exención de responsabilidad:** El uso de esta herramienta es responsabilidad exclusiva del usuario.
+* **Auditoría:** Se recomienda ejecutar `composer audit` regularmente.
 
-**Ejecutar migraciones pendientes:**
-```bash
-php artisan migrate
-php artisan db:seed
-```
+Puedes leer el documento completo en nuestra **[Política de Seguridad](SECURITY.md)**.
 
-**Limpieza profunda de caché:**
-```bash
-php artisan cache:clear && php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan event:clear && php artisan clear-compiled && php artisan optimize
-```
-
-## 👤 Desarrollo
-
-Aplicación desarrollada por Domingo Ruiz Arroyo
-<[ordenadordomi@gmail.com](mailto:ordenadordomi@gmail.com)>
-
-## 📄 Licencia
+## Licencia
 
 [![License: CC BY-SA 3.0 ES](https://licensebuttons.net/l/by-sa/3.0/es/88x31.png)](https://creativecommons.org/licenses/by-sa/3.0/es/)
 
-Este proyecto está sujeto a una licencia **Reconocimiento-CompartirIgual 3.0 España de Creative Commons (CC BY-SA 3.0 ES)**. Consulte el archivo [LICENSE](../main/LICENSE) para obtener más detalles.
+Este proyecto está sujeto a una licencia **Reconocimiento-CompartirIgual 3.0 España de Creative Commons (CC BY-SA 3.0 ES)**. Consulte el archivo [LICENSE](LICENSE.md) para obtener más detalles.
+
+## Desarrollo
+
+Aplicación desarrollada por Domingo Ruiz Arroyo
+<[ordenadordomi@gmail.com](mailto:ordenadordomi@gmail.com)>
