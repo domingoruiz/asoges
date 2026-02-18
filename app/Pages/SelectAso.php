@@ -56,10 +56,8 @@ class SelectAso extends Page implements HasForms
         $options  = $this->getOptions();
 
         session([
-            'aso_actual' => $selected,
-            'rol_activo' => $selected === 'superadmin'
-                ? 'superadmin'
-                : AsoUsr::find($selected)?->rol_id,
+            'aso_actual' => AsoUsr::find($selected)?->aso_id,
+            'rol_activo' => $selected === 'superadmin' ? 'superadmin' : AsoUsr::find($selected)?->rol_id,
             'aso_label'  => $options[$selected] ?? null,
         ]);
 
