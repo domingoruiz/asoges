@@ -20,6 +20,11 @@ class SelectAso extends Page implements HasForms
 
     public int|string|null $aso_id = null;
 
+    public function mount(): void
+    {
+        session()->forget(['aso_actual', 'rol_activo', 'aso_label']);
+    }
+
     protected function getFormSchema(): array
     {
         return [

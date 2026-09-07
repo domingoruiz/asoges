@@ -35,7 +35,8 @@ class AsogesPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->topNavigation()
+            ->topNavigation(fn () => ! request()->routeIs('filament.asoges.pages.select-aso') && filled(session('rol_activo')))
+            ->navigation(fn () => ! request()->routeIs('filament.asoges.pages.select-aso') && filled(session('rol_activo')))
             ->discoverResources(in: app_path('Resources'), for: 'App\\Resources')
             ->discoverPages(in: app_path('Pages'), for: 'App\\Pages')
             ->pages([
