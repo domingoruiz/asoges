@@ -4,6 +4,7 @@ namespace App\Pages;
 
 use Filament\Pages\Page;
 use Filament\Actions\Action;
+use App\Models\Aso;
 
 class Dashboard extends Page
 {
@@ -30,9 +31,21 @@ class Dashboard extends Page
         ];
     }
 
+    public function getAsoProperty(): ?Aso
+    {
+        $asoId = session('aso_actual');
+        return is_numeric($asoId) ? Aso::find($asoId) : null;
+    }
+
+    public function getFooterWidgetsColumns(): int | array
+    {
+        return 1;
+    }
+
     protected function getFooterWidgets(): array
     {
         return [
+            \App\Widgets\AsoInfoWidget::class,
             \App\Widgets\LibrosKpi::class,
         ];
     }

@@ -19,6 +19,10 @@ class Aso extends Model
         'alt_usr', 'mod_usr',
     ];
 
+    protected $casts = [
+        'fch_constitucion' => 'date',
+    ];
+
     public function usuarios(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'aso_usr', 'aso_id', 'usr_id')
