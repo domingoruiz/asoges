@@ -81,13 +81,13 @@ class LibroActasResource extends Resource
                 ->schema([
                     Select::make('tipo_acta_id')
                         ->label('Tipo de acta')
-                        ->options(fn() => TipoActa::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray())
+                        ->options(fn() => is_numeric(session('aso_actual')) ? TipoActa::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray() : [])
                         ->required()
                         ->searchable()
                         ->preload(),
                     Select::make('estado_acta_id')
                         ->label('Estado')
-                        ->options(fn() => EstadoActa::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray())
+                        ->options(fn() => is_numeric(session('aso_actual')) ? EstadoActa::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray() : [])
                         ->required()
                         ->searchable()
                         ->preload(),

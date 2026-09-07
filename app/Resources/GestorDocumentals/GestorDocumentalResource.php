@@ -83,6 +83,9 @@ class GestorDocumentalResource extends Resource
                         ->preload()
                         ->options(function () {
                             $asoId = session('aso_actual');
+                            if (!is_numeric($asoId)) {
+                                return [];
+                            }
                             $items = TipoDocumento::query()->where('aso_id', $asoId)->get(['id', 'nombre', 'categoria_padre_id']);
                             $byId = $items->keyBy('id');
                             $labels = [];
@@ -104,19 +107,19 @@ class GestorDocumentalResource extends Resource
                         ->required()
                         ->searchable()
                         ->preload()
-                        ->options(fn() => Entidad::query()->where('aso_id', session('aso_actual'))->orderBy('nombre_fiscal')->pluck('nombre_fiscal', 'id')->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? Entidad::query()->where('aso_id', session('aso_actual'))->orderBy('nombre_fiscal')->pluck('nombre_fiscal', 'id')->toArray() : []),
                     Select::make('ejercicio_id')
                         ->label('Ejercicio')
                         ->required()
                         ->searchable()
                         ->preload()
-                        ->options(fn() => Ejercicio::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? Ejercicio::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray() : []),
                     Select::make('estado_documento')
                         ->label('Estado')
                         ->required()
                         ->searchable()
                         ->preload()
-                        ->options(fn() => EstadoDocumento::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? EstadoDocumento::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray() : []),
                 ])
                 ->columns(2),
             Section::make('Enlaces a libros')
@@ -126,31 +129,31 @@ class GestorDocumentalResource extends Resource
                         ->placeholder('— Sin enlace —')
                         ->searchable()
                         ->preload()
-                        ->options(fn() => LibroActa::query()->where('aso_id', session('aso_actual'))->orderByDesc('fecha')->limit(500)->pluck('titulo', 'id')->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? LibroActa::query()->where('aso_id', session('aso_actual'))->orderByDesc('fecha')->limit(500)->pluck('titulo', 'id')->toArray() : []),
                     Select::make('socio_id')
                         ->label('Socio')
                         ->placeholder('— Sin enlace —')
                         ->searchable()
                         ->preload()
-                        ->options(fn() => LibroSocios::query()->where('aso_id', session('aso_actual'))->orderBy('numero_socio')->get(['id', 'numero_socio', 'nombre', 'apellidos'])->mapWithKeys(fn($s) => [$s->id => trim(($s->numero_socio ? ($s->numero_socio . ' — ') : '') . $s->nombre . ' ' . $s->apellidos)])->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? LibroSocios::query()->where('aso_id', session('aso_actual'))->orderBy('numero_socio')->get(['id', 'numero_socio', 'nombre', 'apellidos'])->mapWithKeys(fn($s) => [$s->id => trim(($s->numero_socio ? ($s->numero_socio . ' — ') : '') . $s->nombre . ' ' . $s->apellidos)])->toArray() : []),
                     Select::make('contabilidad_id')
                         ->label('Asiento contable')
                         ->placeholder('— Sin enlace —')
                         ->searchable()
                         ->preload()
-                        ->options(fn() => LibroContabilidad::query()->where('aso_id', session('aso_actual'))->orderByDesc('fecha_contable')->limit(500)->get(['id', 'fecha_contable', 'concepto', 'importe'])->mapWithKeys(fn($a) => [$a->id => sprintf('%s — %s — %0.2f', $a->fecha_contable?->format('Y-m-d'), $a->concepto, $a->importe)])->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? LibroContabilidad::query()->where('aso_id', session('aso_actual'))->orderByDesc('fecha_contable')->limit(500)->get(['id', 'fecha_contable', 'concepto', 'importe'])->mapWithKeys(fn($a) => [$a->id => sprintf('%s — %s — %0.2f', $a->fecha_contable?->format('Y-m-d'), $a->concepto, $a->importe)])->toArray() : []),
                     Select::make('inventario_id')
                         ->label('Inventario')
                         ->placeholder('— Sin enlace —')
                         ->searchable()
                         ->preload()
-                        ->options(fn() => LibroInventario::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? LibroInventario::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray() : []),
                     Select::make('libro_proyecto_id')
                         ->label('Proyecto')
                         ->placeholder('— Sin enlace —')
                         ->searchable()
                         ->preload()
-                        ->options(fn() => LibroProyecto::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray()),
+                        ->options(fn() => is_numeric(session('aso_actual')) ? LibroProyecto::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray() : []),
                 ])
                 ->columns(2),
             Section::make('Archivo')
@@ -197,6 +200,9 @@ class GestorDocumentalResource extends Resource
                 SelectFilter::make('direccion_documento')->label('Dirección')->options(['entrada' => 'Entrada', 'salida' => 'Salida']),
                 SelectFilter::make('tipo_documento_id')->label('Tipo')->options(function () {
                     $asoId = session('aso_actual');
+                    if (!is_numeric($asoId)) {
+                        return [];
+                    }
                     $items = TipoDocumento::query()->where('aso_id', $asoId)->get(['id', 'nombre', 'categoria_padre_id']);
                     $byId = $items->keyBy('id');
                     $labels = [];
@@ -213,7 +219,7 @@ class GestorDocumentalResource extends Resource
                     natcasesort($labels);
                     return $labels;
                 }),
-                SelectFilter::make('estado_documento')->label('Estado')->options(fn() => EstadoDocumento::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray()),
+                SelectFilter::make('estado_documento')->label('Estado')->options(fn() => is_numeric(session('aso_actual')) ? EstadoDocumento::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray() : []),
                 TrashedFilter::make(),
             ])
             ->toolbarActions([

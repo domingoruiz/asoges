@@ -84,8 +84,18 @@ class LibroContabilidadResource extends Resource
                                 if ($fin && $value > $fin) $fail('La fecha contable es posterior al fin del ejercicio.');
                             };
                         }),
-                    Select::make('tipo_transaccion_id')->label('Tipo de transacción')->relationship('tipoTransaccion', 'nombre')->searchable()->preload()->required(),
-                    Select::make('ejercicio_id')->label('Ejercicio')->relationship('ejercicio', 'nombre')->searchable()->preload()->required(),
+                    Select::make('tipo_transaccion_id')
+                        ->label('Tipo de transacción')
+                        ->relationship('tipoTransaccion', 'nombre', modifyQueryUsing: fn (Builder $query) => $query->where('aso_id', session('aso_actual')))
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    Select::make('ejercicio_id')
+                        ->label('Ejercicio')
+                        ->relationship('ejercicio', 'nombre', modifyQueryUsing: fn (Builder $query) => $query->where('aso_id', session('aso_actual')))
+                        ->searchable()
+                        ->preload()
+                        ->required(),
                     Select::make('categoria_id')
                         ->label('Categoría contable')
                         ->required()
@@ -93,6 +103,9 @@ class LibroContabilidadResource extends Resource
                         ->preload()
                         ->options(function () {
                             $asoId = session('aso_actual');
+                            if (!is_numeric($asoId)) {
+                                return [];
+                            }
                             $cats = CategoriaContable::query()->where('aso_id', $asoId)->get(['id', 'nombre', 'categoria_padre_id']);
                             $byId = $cats->keyBy('id');
                             $labels = [];
@@ -109,8 +122,18 @@ class LibroContabilidadResource extends Resource
                             natcasesort($labels);
                             return $labels;
                         }),
-                    Select::make('entidad_id')->label('Entidad')->relationship('entidad', 'nombre_fiscal')->searchable()->preload()->required(),
-                    Select::make('cuenta_bancaria_id')->label('Cuenta bancaria')->relationship('cuentaBancaria', 'nombre')->searchable()->preload()->required(),
+                    Select::make('entidad_id')
+                        ->label('Entidad')
+                        ->relationship('entidad', 'nombre_fiscal', modifyQueryUsing: fn (Builder $query) => $query->where('aso_id', session('aso_actual')))
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    Select::make('cuenta_bancaria_id')
+                        ->label('Cuenta bancaria')
+                        ->relationship('cuentaBancaria', 'nombre', modifyQueryUsing: fn (Builder $query) => $query->where('aso_id', session('aso_actual')))
+                        ->searchable()
+                        ->preload()
+                        ->required(),
                     Select::make('moneda_id')->label('Moneda')->relationship('moneda', 'nombre')->searchable()->preload()->required()->reactive(),
                 ])
                 ->columns(3),
@@ -187,13 +210,19 @@ class LibroContabilidadResource extends Resource
                             ->when($data['desde'] ?? null, fn($q, $d) => $q->whereDate('fecha_contable', '>=', $d))
                             ->when($data['hasta'] ?? null, fn($q, $h) => $q->whereDate('fecha_contable', '<=', $h));
                     }),
-                SelectFilter::make('tipo_transaccion_id')->label('Tipo de transacción')->options(
-                    TipoTransaccion::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray()
-                ),
+                SelectFilter::make('tipo_transaccion_id')
+                    ->label('Tipo de transacción')
+                    ->options(fn () => is_numeric(session('aso_actual'))
+                        ? TipoTransaccion::query()->where('aso_id', session('aso_actual'))->orderBy('nombre')->pluck('nombre', 'id')->toArray()
+                        : []
+                    ),
                 SelectFilter::make('categoria_id')
                     ->label('Categoría contable')
                     ->options(function () {
                         $asoId = session('aso_actual');
+                        if (!is_numeric($asoId)) {
+                            return [];
+                        }
                         $cats = CategoriaContable::query()->where('aso_id', $asoId)->get(['id', 'nombre', 'categoria_padre_id']);
                         $byId = $cats->keyBy('id');
                         $labels = [];

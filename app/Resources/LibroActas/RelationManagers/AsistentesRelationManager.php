@@ -30,9 +30,25 @@ class AsistentesRelationManager extends RelationManager
                 ->label('Socio')
                 ->required()
                 ->searchable()
-                ->preload(false)
+                ->preload()
+                ->options(fn () => is_numeric(session('aso_actual'))
+                    ? LibroSocios::query()
+                        ->where('aso_id', session('aso_actual'))
+                        ->orderBy('apellidos')
+                        ->orderBy('nombre')
+                        ->get()
+                        ->mapWithKeys(function ($s) {
+                            $label = trim(($s->nombre ?? '') . ' ' . ($s->apellidos ?? ''));
+                            return [$s->id => $label];
+                        })
+                        ->toArray()
+                    : []
+                )
                 ->getSearchResultsUsing(function (string $search) {
                     $asoId = session('aso_actual');
+                    if (!is_numeric($asoId)) {
+                        return [];
+                    }
 
                     return LibroSocios::query()
                         ->where('aso_id', $asoId)
