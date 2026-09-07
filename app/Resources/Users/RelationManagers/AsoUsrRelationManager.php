@@ -50,6 +50,15 @@ class AsoUsrRelationManager extends RelationManager
             Select::make('rol_id')
                 ->label('Rol')
                 ->required()
+                ->rules([
+                    fn ($livewire, callable $get) => \Illuminate\Validation\Rule::unique('aso_usr', 'rol_id')
+                        ->where('usr_id', $livewire->ownerRecord->id)
+                        ->where('aso_id', $get('aso_id'))
+                        ->whereNull('deleted_at'),
+                ])
+                ->validationMessages([
+                    'unique' => 'Este usuario ya tiene asignado este rol en la asociación seleccionada.',
+                ])
                 ->searchable()
                 ->preload(false)
                 ->getSearchResultsUsing(function (string $search) {

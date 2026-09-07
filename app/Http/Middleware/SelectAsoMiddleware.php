@@ -24,7 +24,29 @@ class SelectAsoMiddleware
         }
 
         if (session()->has('rol_activo') && filled(session('rol_activo'))) {
-            return $next($request);
+            $user = auth()->user();
+            $rolActivo = session('rol_activo');
+
+            if ($rolActivo === 'superadmin') {
+                if ($user->is_superadmin) {
+                    return $next($request);
+                }
+            } else {
+                $asoId = session('aso_actual');
+                if (is_numeric($asoId)) {
+                    $valid = $user->asoUsuarios()
+                        ->where('aso_id', $asoId)
+                        ->where('rol_id', $rolActivo)
+                        ->exists();
+
+                    if ($valid) {
+                        return $next($request);
+                    }
+                }
+            }
+
+            session()->forget(['aso_actual', 'rol_activo', 'aso_label']);
+            session()->save();
         }
 
         return to_route('filament.asoges.pages.select-aso');

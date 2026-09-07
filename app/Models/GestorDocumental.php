@@ -30,6 +30,10 @@ class GestorDocumental extends Model
     protected static function booted(): void
     {
         static::deleting(function ($record) {
+            if (method_exists($record, 'isForceDeleting') && ! $record->isForceDeleting()) {
+                return;
+            }
+
             if ($record->archivo && Storage::disk('public')->exists($record->archivo)) {
                 Storage::disk('public')->delete($record->archivo);
             }

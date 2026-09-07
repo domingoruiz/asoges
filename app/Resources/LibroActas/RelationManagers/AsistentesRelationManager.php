@@ -29,6 +29,14 @@ class AsistentesRelationManager extends RelationManager
             Select::make('socio_id')
                 ->label('Socio')
                 ->required()
+                ->rules([
+                    fn ($livewire) => \Illuminate\Validation\Rule::unique('asistentes', 'socio_id')
+                        ->where('acta_id', $livewire->ownerRecord->id)
+                        ->whereNull('deleted_at'),
+                ])
+                ->validationMessages([
+                    'unique' => 'Este socio ya ha sido añadido como asistente a esta acta.',
+                ])
                 ->searchable()
                 ->preload()
                 ->options(fn () => is_numeric(session('aso_actual'))

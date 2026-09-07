@@ -25,12 +25,20 @@ class SelectAso extends Page implements HasForms
         session()->forget(['aso_actual', 'rol_activo', 'aso_label']);
     }
 
+    public function hasOptions(): bool
+    {
+        return ! empty($this->getOptions());
+    }
+
     protected function getFormSchema(): array
     {
+        $options = $this->getOptions();
+
         return [
             Select::make('aso_id')
                 ->label('Selecciona tu asociación')
-                ->options($this->getOptions())
+                ->options($options)
+                ->in(array_keys($options))
                 ->required(),
         ];
     }
@@ -38,13 +46,16 @@ class SelectAso extends Page implements HasForms
     protected function getOptions(): array
     {
         $user = Auth::user();
+        if (! $user) {
+            return [];
+        }
 
         $opts = $user->asoUsuarios()
             ->with(['aso', 'rol'])
             ->get()
-            ->sortBy(fn ($asoUsr) => $asoUsr->aso->nombre)
+            ->sortBy(fn ($asoUsr) => $asoUsr->aso?->nombre)
             ->mapWithKeys(fn (AsoUsr $asoUsr) => [
-                $asoUsr->id => "{$asoUsr->aso->nombre} ({$asoUsr->rol->nombre})",
+                (string) $asoUsr->id => "{$asoUsr->aso?->nombre} ({$asoUsr->rol?->nombre})",
             ])
             ->toArray();
 
@@ -57,17 +68,46 @@ class SelectAso extends Page implements HasForms
 
     public function submit(): void
     {
-        $selected = $this->aso_id;
-        $options  = $this->getOptions();
+        $user = Auth::user();
+        if (! $user) {
+            return;
+        }
 
-        session([
-            'aso_actual' => AsoUsr::find($selected)?->aso_id,
-            'rol_activo' => $selected === 'superadmin' ? 'superadmin' : AsoUsr::find($selected)?->rol_id,
-            'aso_label'  => $options[$selected] ?? null,
-        ]);
+        $options = $this->getOptions();
+        $selected = $this->aso_id !== null ? (string) $this->aso_id : null;
+
+        if ($selected === null || ! array_key_exists($selected, $options)) {
+            $this->addError('aso_id', 'Selección no válida.');
+            return;
+        }
+
+        if ($selected === 'superadmin') {
+            if (! $user->is_superadmin) {
+                $this->addError('aso_id', 'No tienes permisos de superadministrador.');
+                return;
+            }
+
+            session([
+                'aso_actual' => null,
+                'rol_activo' => 'superadmin',
+                'aso_label'  => 'Superadmin',
+            ]);
+        } else {
+            $asoUsr = $user->asoUsuarios()->find($selected);
+            if (! $asoUsr) {
+                $this->addError('aso_id', 'No tienes acceso a esta asociación.');
+                return;
+            }
+
+            session([
+                'aso_actual' => $asoUsr->aso_id,
+                'rol_activo' => $asoUsr->rol_id,
+                'aso_label'  => $options[$selected] ?? null,
+            ]);
+        }
 
         session()->save();
 
-        redirect()->route('filament.asoges.pages..');
+        redirect(Dashboard::getUrl());
     }
 }

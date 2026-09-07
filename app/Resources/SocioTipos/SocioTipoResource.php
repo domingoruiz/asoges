@@ -32,7 +32,7 @@ class SocioTipoResource extends Resource
 
     public static function canAccess(): bool
     {
-        return session('rol_activo') === 'superadmin';
+        return session('rol_activo') === 'superadmin' && (bool) auth()->user()?->is_superadmin;
     }
 
     public static function form(Schema $schema): Schema
