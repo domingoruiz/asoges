@@ -1,7 +1,7 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
     "name": "domingoruiz/asoges",
-    "version": "1.0",
+    "version": "1.1",
     "type": "project",
     "description": "Aplicación web para la gestión integral y documental de asociaciones",
     "keywords": [

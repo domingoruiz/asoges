@@ -44,7 +44,7 @@ class LibroContabilidadResource extends Resource
 {
     protected static ?string $model = LibroContabilidad::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = '';
+    protected static string|\UnitEnum|null $navigationGroup = 'Libros';
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-banknotes';
 
     protected static ?string $navigationLabel = 'Contabilidad';

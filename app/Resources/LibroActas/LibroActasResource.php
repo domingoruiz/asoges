@@ -38,7 +38,7 @@ class LibroActasResource extends Resource
 {
     protected static ?string $model = LibroActa::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = '';
+    protected static string|\UnitEnum|null $navigationGroup = 'Libros';
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?string $navigationLabel = 'Actas';

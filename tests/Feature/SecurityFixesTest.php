@@ -173,4 +173,49 @@ class SecurityFixesTest extends TestCase
 
         $this->assertEquals(42, $result['aso_id']);
     }
+
+    public function test_crm_create_mutators_strictly_enforce_current_session_aso_id(): void
+    {
+        session(['aso_actual' => 55]);
+
+        $createContacto = new class extends \App\Resources\Contactos\Pages\CreateContacto {
+            public function testMutate(array $data): array { return $this->mutateFormDataBeforeCreate($data); }
+        };
+        $resContacto = $createContacto->testMutate(['aso_id' => 999, 'nombre_completo' => 'Hacker Contact']);
+        $this->assertEquals(55, $resContacto['aso_id']);
+
+        $createInteraccion = new class extends \App\Resources\LibroInteraccions\Pages\CreateLibroInteraccion {
+            public function testMutate(array $data): array { return $this->mutateFormDataBeforeCreate($data); }
+        };
+        $resInteraccion = $createInteraccion->testMutate(['aso_id' => 999, 'interaccion' => 'Directo']);
+        $this->assertEquals(55, $resInteraccion['aso_id']);
+
+        $createTarea = new class extends \App\Resources\Tareas\Pages\CreateTarea {
+            public function testMutate(array $data): array { return $this->mutateFormDataBeforeCreate($data); }
+        };
+        $resTarea = $createTarea->testMutate(['aso_id' => 999, 'nombre' => 'Hacker Task']);
+        $this->assertEquals(55, $resTarea['aso_id']);
+    }
+
+    public function test_crm_resources_scope_queries_strictly_to_active_association(): void
+    {
+        $aso1 = Aso::create(['nombre' => 'Aso Uno', 'cif' => 'CIF000001', 'domicilio_social' => 'Dir', 'fch_constitucion' => now(), 'alt_usr' => 1]);
+        $aso2 = Aso::create(['nombre' => 'Aso Dos', 'cif' => 'CIF000002', 'domicilio_social' => 'Dir', 'fch_constitucion' => now(), 'alt_usr' => 1]);
+
+        \App\Models\Contacto::create(['aso_id' => $aso1->id, 'nombre_completo' => 'C1 Aso1', 'alt_usr' => 1]);
+        \App\Models\Contacto::create(['aso_id' => $aso2->id, 'nombre_completo' => 'C2 Aso2', 'alt_usr' => 1]);
+
+        \App\Models\Tarea::create(['aso_id' => $aso1->id, 'nombre' => 'T1 Aso1', 'fecha' => now()->toDateString(), 'frecuencia' => 'puntual', 'alt_usr' => 1]);
+        \App\Models\Tarea::create(['aso_id' => $aso2->id, 'nombre' => 'T2 Aso2', 'fecha' => now()->toDateString(), 'frecuencia' => 'puntual', 'alt_usr' => 1]);
+
+        session(['aso_actual' => $aso1->id, 'rol_activo' => 'presidente']);
+
+        $contactosQuery = \App\Resources\Contactos\ContactoResource::getEloquentQuery()->get();
+        $this->assertCount(1, $contactosQuery);
+        $this->assertEquals('C1 Aso1', $contactosQuery->first()->nombre_completo);
+
+        $tareasQuery = \App\Resources\Tareas\TareaResource::getEloquentQuery()->get();
+        $this->assertCount(1, $tareasQuery);
+        $this->assertEquals('T1 Aso1', $tareasQuery->first()->nombre);
+    }
 }

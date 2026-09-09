@@ -32,12 +32,12 @@ class LibroProyectoResource extends Resource
 {
     protected static ?string $model = LibroProyecto::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = '';
+    protected static string|\UnitEnum|null $navigationGroup = 'CRM';
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?string $navigationLabel = 'Proyectos';
     public static function getModelLabel(): string { return 'Proyecto'; }
-    public static function getPluralModelLabel(): string { return 'Libro Proyectos'; }
+    public static function getPluralModelLabel(): string { return 'Proyectos'; }
 
     public static function canAccess(): bool
     {
@@ -70,8 +70,17 @@ class LibroProyectoResource extends Resource
                         ->options(['pendiente' => 'Pendiente', 'en_curso' => 'En curso', 'finalizado' => 'Finalizado'])
                         ->required()
                         ->native(false),
-                    DatePicker::make('fecha_inicio')->label('Fecha inicio')->native(false),
-                    DatePicker::make('fecha_fin')->label('Fecha fin')->native(false)->rule('after_or_equal:fecha_inicio'),
+                    DatePicker::make('fecha_inicio')
+                        ->label('Fecha inicio')
+                        ->displayFormat('d/m/Y')
+                        ->format('Y-m-d')
+                        ->native(false),
+                    DatePicker::make('fecha_fin')
+                        ->label('Fecha fin')
+                        ->displayFormat('d/m/Y')
+                        ->format('Y-m-d')
+                        ->native(false)
+                        ->rule('after_or_equal:fecha_inicio'),
                 ])
                 ->columns(2),
             Section::make('Observaciones')
@@ -104,8 +113,8 @@ class LibroProyectoResource extends Resource
                         'finalizado' => 'success',
                         default => 'gray',
                     }),
-                TextColumn::make('fecha_inicio')->label('Inicio')->date()->sortable(),
-                TextColumn::make('fecha_fin')->label('Fin')->date()->sortable(),
+                TextColumn::make('fecha_inicio')->label('Inicio')->date('d/m/Y')->sortable(),
+                TextColumn::make('fecha_fin')->label('Fin')->date('d/m/Y')->sortable(),
             ])
             ->filters([
                 TrashedFilter::make(),
@@ -117,7 +126,7 @@ class LibroProyectoResource extends Resource
                 BulkAction::make('exportar')
                     ->label('Exportar seleccionados')
                     ->icon('heroicon-o-arrow-down-tray')
-                    ->action(fn(Collection $records) => Excel::download(new LibroProyectosExport($records->pluck('id')), 'libro_proyectos.xlsx')),
+                    ->action(fn(Collection $records) => Excel::download(new LibroProyectosExport($records->pluck('id')), 'proyectos.xlsx')),
                 DeleteBulkAction::make(),
                 RestoreBulkAction::make(),
             ]);
@@ -134,6 +143,9 @@ class LibroProyectoResource extends Resource
 
     public static function getRelations(): array
     {
-        return [DocumentosRelationManager::class];
+        return [
+            DocumentosRelationManager::class,
+            RelationManagers\InteraccionesRelationManager::class,
+        ];
     }
 }

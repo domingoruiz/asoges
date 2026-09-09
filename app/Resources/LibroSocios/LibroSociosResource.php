@@ -31,7 +31,7 @@ class LibroSociosResource extends Resource
 {
     protected static ?string $model = LibroSocios::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = '';
+    protected static string|\UnitEnum|null $navigationGroup = 'Libros';
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $navigationLabel = 'Socios';
@@ -161,7 +161,10 @@ class LibroSociosResource extends Resource
 
     public static function getRelations(): array
     {
-        return [DocumentosRelationManager::class];
+        return [
+            DocumentosRelationManager::class,
+            RelationManagers\InteraccionesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
