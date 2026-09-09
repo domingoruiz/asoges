@@ -34,7 +34,7 @@ class UserResource extends Resource
 
     public static function canAccess(): bool
     {
-        return session('rol_activo') === 'superadmin';
+        return session('rol_activo') === 'superadmin' && (bool) auth()->user()?->is_superadmin;
     }
 
     public static function form(Schema $schema): Schema
@@ -54,6 +54,7 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')->label('Nombre')->searchable()->sortable(),
                 TextColumn::make('email')->label('Email')->searchable()->sortable(),
+                \Filament\Tables\Columns\IconColumn::make('is_superadmin')->label('Superadmin')->boolean()->sortable(),
                 TextColumn::make('created_at')->label('Creado')->dateTime()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')->label('Modificado')->dateTime()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deleted_at')->label('Papelera')->dateTime()->toggleable(isToggledHiddenByDefault: true),

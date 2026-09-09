@@ -19,12 +19,18 @@ class LibrosKpi extends BaseWidget
     {
         $asoId = session('aso_actual');
         $rol   = session('rol_activo');
-        $isSuper = ($rol === 'superadmin');
+        $isSuper = ($rol === 'superadmin' && (bool) auth()->user()?->is_superadmin);
 
         $count = function (string $model) use ($asoId, $isSuper): int {
-            return $model::query()
-                ->when(!$isSuper && is_numeric($asoId), fn ($q) => $q->where('aso_id', $asoId))
-                ->count();
+            if ($isSuper) {
+                return $model::query()->count();
+            }
+
+            if (! is_numeric($asoId)) {
+                return 0;
+            }
+
+            return $model::query()->where('aso_id', $asoId)->count();
         };
 
         $socios       = $count(\App\Models\LibroSocios::class);

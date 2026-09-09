@@ -13,7 +13,7 @@ class CreateEjercicio extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['aso_id'] = $data['aso_id'] ?? session('aso_actual');
+        $data['aso_id'] = session('aso_actual');
 
         $overlaps = Ejercicio::query()
             ->where('aso_id', $data['aso_id'])

@@ -11,7 +11,7 @@ class CreateLibroSocios extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['aso_id'] = $data['aso_id'] ?? session('aso_actual');
+        $data['aso_id'] = session('aso_actual');
         return $data;
     }
 }

@@ -57,6 +57,11 @@ class LibroSocios extends Model
         return $this->hasMany(GestorDocumental::class, 'socio_id');
     }
 
+    public function interacciones(): HasMany
+    {
+        return $this->hasMany(LibroInteraccion::class, 'socio_id');
+    }
+
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'alt_usr');

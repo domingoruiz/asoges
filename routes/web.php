@@ -38,4 +38,4 @@ Route::get('/documentos/{token}', function (Request $request, string $token) {
     }
 
     return response()->file(Storage::disk('public')->path($path));
-})->name('gestor_documental.archivo');
+})->middleware(['web', 'auth'])->name('gestor_documental.archivo');

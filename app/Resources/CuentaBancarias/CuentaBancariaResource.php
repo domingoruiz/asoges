@@ -51,7 +51,12 @@ class CuentaBancariaResource extends Resource
             Section::make('Datos de la Cuenta Bancaria')
                 ->schema([
                     TextInput::make('nombre')->label('Nombre de la Cuenta')->required()->maxLength(255)->rule('regex:/^[\p{L}\p{M}\s\-\.\,\'"]+$/u'),
-                    Select::make('entidad_id')->label('Entidad Bancaria')->relationship('entidadRel', 'nombre_fiscal')->preload()->searchable()->nullable(),
+                    Select::make('entidad_id')
+                        ->label('Entidad Bancaria')
+                        ->relationship('entidadRel', 'nombre_fiscal', modifyQueryUsing: fn (Builder $query) => $query->where('aso_id', session('aso_actual')))
+                        ->preload()
+                        ->searchable()
+                        ->nullable(),
                     TextInput::make('numero_cuenta')->label('Número de Cuenta')->maxLength(255)->nullable(),
                     TextInput::make('swift_bic')->label('SWIFT/BIC')->maxLength(50)->nullable()->rule('regex:/^[A-Z0-9]+$/i'),
                     Select::make('moneda_id')->label('Moneda')->relationship('monedaRel', 'codigo_iso')->preload()->searchable()->nullable(),

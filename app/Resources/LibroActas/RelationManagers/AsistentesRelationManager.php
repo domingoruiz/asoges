@@ -29,10 +29,34 @@ class AsistentesRelationManager extends RelationManager
             Select::make('socio_id')
                 ->label('Socio')
                 ->required()
+                ->rules([
+                    fn ($livewire) => \Illuminate\Validation\Rule::unique('asistentes', 'socio_id')
+                        ->where('acta_id', $livewire->ownerRecord->id)
+                        ->whereNull('deleted_at'),
+                ])
+                ->validationMessages([
+                    'unique' => 'Este socio ya ha sido añadido como asistente a esta acta.',
+                ])
                 ->searchable()
-                ->preload(false)
+                ->preload()
+                ->options(fn () => is_numeric(session('aso_actual'))
+                    ? LibroSocios::query()
+                        ->where('aso_id', session('aso_actual'))
+                        ->orderBy('apellidos')
+                        ->orderBy('nombre')
+                        ->get()
+                        ->mapWithKeys(function ($s) {
+                            $label = trim(($s->nombre ?? '') . ' ' . ($s->apellidos ?? ''));
+                            return [$s->id => $label];
+                        })
+                        ->toArray()
+                    : []
+                )
                 ->getSearchResultsUsing(function (string $search) {
                     $asoId = session('aso_actual');
+                    if (!is_numeric($asoId)) {
+                        return [];
+                    }
 
                     return LibroSocios::query()
                         ->where('aso_id', $asoId)

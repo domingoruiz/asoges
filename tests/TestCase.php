@@ -12,11 +12,5 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase, WithFaker, InteractsWithDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Artisan::call('migrate:fresh');
-        Artisan::call('db:seed');
-    }
+    protected bool $seed = true;
 }

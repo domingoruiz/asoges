@@ -36,7 +36,7 @@ class LibroInventarioResource extends Resource
 {
     protected static ?string $model = LibroInventario::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = '';
+    protected static string|\UnitEnum|null $navigationGroup = 'Libros';
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $navigationLabel = 'Inventario';
@@ -65,6 +65,9 @@ class LibroInventarioResource extends Resource
                     Select::make('ubicacion_id')->label('Ubicación')->required()->searchable()->preload()->options(fn() => self::buildTreeOptions(Ubicacion::class)),
                     Select::make('entidad_id')->label('Entidad')->required()->searchable()->preload()->options(function () {
                         $asoId = session('aso_actual');
+                        if (!is_numeric($asoId)) {
+                            return [];
+                        }
                         return Entidad::query()->where('aso_id', $asoId)->orderBy('nombre_fiscal')->pluck('nombre_fiscal', 'id')->toArray();
                     }),
                 ])
@@ -86,6 +89,9 @@ class LibroInventarioResource extends Resource
     private static function buildTreeOptions(string $model): array
     {
         $asoId = session('aso_actual');
+        if (!is_numeric($asoId)) {
+            return [];
+        }
         $items = $model::query()->where('aso_id', $asoId)->get(['id', 'nombre', 'categoria_padre_id']);
         $byId = $items->keyBy('id');
         $labels = [];
@@ -127,6 +133,9 @@ class LibroInventarioResource extends Resource
                 SelectFilter::make('ubicacion_id')->label('Ubicación')->options(fn() => self::buildTreeOptions(Ubicacion::class)),
                 SelectFilter::make('entidad_id')->label('Entidad')->options(function () {
                     $asoId = session('aso_actual');
+                    if (!is_numeric($asoId)) {
+                        return [];
+                    }
                     return Entidad::query()->where('aso_id', $asoId)->orderBy('nombre_fiscal')->pluck('nombre_fiscal', 'id')->toArray();
                 }),
             ])
