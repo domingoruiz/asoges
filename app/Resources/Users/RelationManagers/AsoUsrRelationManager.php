@@ -53,8 +53,7 @@ class AsoUsrRelationManager extends RelationManager
                 ->rules([
                     fn ($livewire, callable $get) => \Illuminate\Validation\Rule::unique('aso_usr', 'rol_id')
                         ->where('usr_id', $livewire->ownerRecord->id)
-                        ->where('aso_id', $get('aso_id'))
-                        ->whereNull('deleted_at'),
+                        ->where('aso_id', $get('aso_id')),
                 ])
                 ->validationMessages([
                     'unique' => 'Este usuario ya tiene asignado este rol en la asociación seleccionada.',
